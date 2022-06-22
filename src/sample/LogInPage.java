@@ -1,13 +1,13 @@
 package sample;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
-
+import javafx.stage.FileChooser;
+import java.io.File;
 import java.io.IOException;
 
 public class LogInPage {
@@ -19,14 +19,19 @@ public class LogInPage {
     private Circle circleID;
     @FXML
     private Label wrongLogInID;
+    @FXML
+    private Label pathInformation;
+
     private final Main m = new Main();
+    static File file;
+    String fileAbsolutePath;
 
     public void userLogIn () throws IOException {
         checkLogIn();
     }
 
     private void checkLogIn() throws IOException {
-        if ("user".equals(userNameID.getText()) && "123".equals(passwordID.getText())) {
+        if ("user".equals(userNameID.getText()) && "123".equals(passwordID.getText()) && fileAbsolutePath != null) {
             wrongLogInID.setText("SUCCESS");
             wrongLogInID.setStyle("-fx-text-fill: #32a852;");
             circleID.setFill(Paint.valueOf("#32a852"));
@@ -44,5 +49,15 @@ public class LogInPage {
         circleID.setVisible(true);
     }
 
+    public void chooseSingleJSONFile() {
+        FileChooser fc = new FileChooser();
+        fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
+        file = fc.showOpenDialog(null);
 
+        if (file != null ) {
+            pathInformation.setText("Selected file: " + file.getAbsolutePath());
+            pathInformation.setVisible(true);
+            fileAbsolutePath = file.getAbsolutePath();
+        }
+    }
 }

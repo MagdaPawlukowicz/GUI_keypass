@@ -20,7 +20,6 @@
    <center>
       <AnchorPane BorderPane.alignment="CENTER">
          <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="28.0" layoutX="160.0" layoutY="252.0" stroke="WHITE" strokeLineJoin="ROUND" strokeType="INSIDE" width="68.0" />
             <PasswordField fx:id="passwordID" layoutX="199.0" layoutY="195.0" promptText="password" />
             <Label layoutX="26.0" layoutY="193.0" prefHeight="29.0" prefWidth="163.0" text="PASSWORD:">
                <font>
@@ -31,7 +30,7 @@
                   <Font name="Gill Sans MT Bold" size="24.0" />
                </font></Label>
             <TextField fx:id="userNameID" layoutX="199.0" layoutY="146.0" promptText="username" />
-            <Button fx:id="logInButtonID" layoutX="159.0" layoutY="252.0" mnemonicParsing="false" onAction="#userLogIn" style="-fx-background-color: #ed266d;" text="LOG IN" textFill="WHITE">
+            <Button fx:id="logInButtonID" layoutX="36.0" layoutY="289.0" mnemonicParsing="false" onAction="#userLogIn" prefHeight="25.0" prefWidth="99.0" style="-fx-background-color: #ed266d;" text="LOG IN" textFill="WHITE">
                <font>
                   <Font name="Gill Sans MT Bold" size="13.0" />
                </font>
@@ -40,6 +39,15 @@
             <Label fx:id="wrongLogInID" layoutX="126.0" layoutY="59.0" prefHeight="41.0" prefWidth="264.0" text="WRONGPASS" textFill="RED" visible="false">
                <font>
                   <Font name="Gill Sans MT Bold" size="10.0" />
+               </font>
+            </Label>
+            <Button fx:id="fileChooser" layoutX="37.0" layoutY="244.0" mnemonicParsing="false" onAction="#chooseSingleJSONFile" prefHeight="25.0" prefWidth="98.0" style="-fx-background-color: #ed266d;" text="JSON FC" textFill="WHITE">
+               <font>
+                  <Font name="Gill Sans MT Bold" size="14.0" />
+               </font></Button>
+            <Label fx:id="pathInformation" layoutX="142.0" layoutY="244.0" pickOnBounds="false" prefHeight="25.0" prefWidth="251.0" text="PATH INFO" textFill="#ed266d" visible="false">
+               <font>
+                  <Font name="Gill Sans MT" size="12.0" />
                </font>
             </Label>
          </children></AnchorPane>

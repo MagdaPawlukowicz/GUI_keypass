@@ -10,10 +10,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+
+import java.io.*;
 import java.util.Iterator;
 
 public class MainPage {
@@ -21,6 +19,7 @@ public class MainPage {
     JSONObject passwordData = new JSONObject();
     JSONParser jsonParser = new JSONParser();
     JSONArray passwordList = new JSONArray();
+    LogInPage logInPage;
 
     @FXML
     private TableView tableID;
@@ -32,9 +31,6 @@ public class MainPage {
     private TextField textFieldPasswordRow;
     @FXML
     private TextField textFieldURLRow;
-
-    public MainPage() throws IOException {
-    }
 
     public void initialize(){
         TableColumn<Password, SimpleStringProperty> names = new TableColumn<>("Name:");
@@ -53,7 +49,7 @@ public class MainPage {
         URLs.setCellValueFactory(new PropertyValueFactory<>("passwordURL"));
         tableID.getColumns().add(URLs);
 
-        readFile();
+        readFile(LogInPage.file);
     }
 
 
@@ -61,25 +57,25 @@ public class MainPage {
         password = new Password(textFieldNameRow.getText(), textFieldLoginRow.getText(),
                 textFieldPasswordRow.getText(),textFieldURLRow.getText());
         tableID.getItems().add(password);
-        writeFile(password);
+        writeFile(password, logInPage.file);
     }
 
     private Main m = new Main();
 
     public void userLogOut() throws IOException {
-        m.changeScene("sample.fxml");
+        m.changeScene("loginPage.fxml");
     }
 
 
-    public void writeFile(Password password){
+    public void writeFile(Password password, File file){
         passwordData.put("passwordName", password.getPasswordName());
         passwordData.put("login", password.getLogin());
         passwordData.put("password", password.getPassword());
         passwordData.put("passwordURL", password.getPasswordURL());
-
         passwordList.add(passwordData);
+
         try {
-            FileWriter passwordsFile = new FileWriter("passwords.json", false);
+            FileWriter passwordsFile = new FileWriter(file.getName(), false);
             passwordsFile.write(passwordList.toJSONString());
             passwordsFile.flush();
 
@@ -88,9 +84,9 @@ public class MainPage {
         }
     }
 
-    public void readFile() {
+    public void readFile(File file) {
         try {
-            FileReader passwordsReader = new FileReader("passwords.json");
+            FileReader passwordsReader = new FileReader(file);
             Object obj = jsonParser.parse(passwordsReader);
             passwordList = (JSONArray) obj;
             ObjectMapper objectMapper = new ObjectMapper();

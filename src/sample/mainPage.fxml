@@ -2,14 +2,12 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="360.0" prefWidth="600.0" style="-fx-background-color: #f69da1;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.MainPage">
    <center>
       <AnchorPane prefHeight="285.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="25.0" layoutX="-2.0" layoutY="25.0" stroke="WHITE" strokeLineCap="ROUND" strokeType="INSIDE" width="107.0" />
              <Button fx:id="logOutButtonID" layoutY="25.0" mnemonicParsing="false" onAction="#userLogOut" prefHeight="0.0" prefWidth="103.0" style="-fx-background-color: #ed266d;" text="LOG OUT" textFill="white">
                  <font>
                      <Font name="Gill Sans MT Bold" size="12.0" />
@@ -28,7 +26,10 @@
             <TextField fx:id="textFieldLoginRow" layoutX="75.0" layoutY="42.0" prefHeight="25.0" prefWidth="133.0" promptText="Login" />
             <TextField fx:id="textFieldPasswordRow" layoutX="208.0" layoutY="42.0" prefHeight="25.0" prefWidth="124.0" promptText="Password" />
             <TextField fx:id="textFieldURLRow" layoutX="332.0" layoutY="42.0" prefHeight="25.0" prefWidth="176.0" promptText="URL" />
-            <Button fx:id="addRowButton" layoutX="531.0" layoutY="43.0" mnemonicParsing="false" onAction="#addRow" prefHeight="25.0" prefWidth="48.0" text="Add" />
+            <Button fx:id="addRowButton" layoutX="531.0" layoutY="43.0" mnemonicParsing="false" onAction="#addRow" prefHeight="25.0" prefWidth="48.0" style="-fx-background-color: #ed266d;" text="ADD" textFill="WHITE">
+               <font>
+                  <Font name="Gill Sans MT Bold" size="12.0" />
+               </font></Button>
          </children>
       </AnchorPane>
    </bottom>
