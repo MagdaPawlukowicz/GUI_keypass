@@ -12,7 +12,7 @@
          <children>
             <ImageView fitHeight="425.0" fitWidth="202.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../data/password.png" />
+                  <Image url="@../data/pic.png" />
                </image></ImageView>
          </children>
       </AnchorPane>
