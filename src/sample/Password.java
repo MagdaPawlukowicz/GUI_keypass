@@ -1,6 +1,9 @@
 package sample;
 
+import java.util.Objects;
+
 public class Password {
+    private String id;
     private String passwordName = null;
     private String login = null;
     private String password = null;
@@ -8,7 +11,8 @@ public class Password {
 
     public Password() {
     }
-    public Password(String passwordName, String login, String password, String passwordURL) {
+    public Password(String id, String passwordName, String login, String password, String passwordURL) {
+        this.id = id;
         this.passwordName = passwordName;
         this.login = login;
         this.password = password;
@@ -45,6 +49,10 @@ public class Password {
 
     public void setPasswordURL(String passwordURL) {
         this.passwordURL = passwordURL;
+    }
+
+    public String getId() {
+        return id;
     }
 }
 

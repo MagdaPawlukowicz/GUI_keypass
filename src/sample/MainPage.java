@@ -1,6 +1,5 @@
 package sample;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -12,6 +11,7 @@ import org.json.simple.parser.ParseException;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.UUID;
 
 public class MainPage {
     private Password password;
@@ -60,7 +60,7 @@ public class MainPage {
 
 
     public void addRow() {
-        password = new Password(textFieldNameRow.getText(), textFieldLoginRow.getText(),
+        password = new Password(UUID.randomUUID().toString(), textFieldNameRow.getText(), textFieldLoginRow.getText(),
                 textFieldPasswordRow.getText(), textFieldURLRow.getText());
         tableID.getItems().add(password);
         writeFile(password, LogInPage.file);
@@ -71,6 +71,7 @@ public class MainPage {
     }
 
     public void writeFile(Password password, File file) {
+        passwordData.put("id", codeJSONStringValue(password.getId()));
         passwordData.put("passwordName", codeJSONStringValue(password.getPasswordName()));
         passwordData.put("login", codeJSONStringValue(password.getLogin()));
         passwordData.put("password", codeJSONStringValue(password.getPassword()));
@@ -112,7 +113,7 @@ public class MainPage {
                 e.printStackTrace();
             }
         } else if (file.exists() && file.length() == 0) {
-            password = new Password("KeyPass",
+            password = new Password(UUID.randomUUID().toString(), "KeyPass",
                     LogInPage.loginApp,
                     LogInPage.passwordApp,
                     "KeyPass");
@@ -122,6 +123,9 @@ public class MainPage {
     }
 
     private Password decryptPassword(Password password) {
+        if (password.getId() != null) {
+            password.setPassword(decodeJSONStringValue(password.getId()));
+        }
         if (password.getPassword() != null) {
             password.setPassword(decodeJSONStringValue(password.getPassword()));
         }
