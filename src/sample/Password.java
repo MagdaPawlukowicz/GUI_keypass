@@ -12,7 +12,7 @@ public class Password {
         this.passwordName = passwordName;
         this.login = login;
         this.password = password;
-        this.passwordURL =passwordURL;
+        this.passwordURL = passwordURL;
     }
 
     public String getPasswordName() {

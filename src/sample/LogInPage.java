@@ -7,8 +7,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
-import java.io.File;
-import java.io.IOException;
+
+import java.io.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class LogInPage {
     @FXML
@@ -21,17 +23,32 @@ public class LogInPage {
     private Label wrongLogInID;
     @FXML
     private Label pathInformation;
+    @FXML
+    private Label lastLogInInformation;
 
     private final Main m = new Main();
     static File file;
     String fileAbsolutePath;
+    static String passwordApp = "123";
+    static String loginApp = "user";
+    private static BufferedReader reader;
+
+
+    public void initialize() throws IOException {
+        try {
+            reader = new BufferedReader(new FileReader("src/data/lastLogInTime.txt"));
+            lastLogInInformation.setText(reader.readLine());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void userLogIn () throws IOException {
         checkLogIn();
     }
 
     private void checkLogIn() throws IOException {
-        if ("user".equals(userNameID.getText()) && "123".equals(passwordID.getText()) && fileAbsolutePath != null) {
+        if (loginApp.equals(userNameID.getText()) && passwordApp.equals(passwordID.getText()) && fileAbsolutePath != null) {
             wrongLogInID.setText("SUCCESS");
             wrongLogInID.setStyle("-fx-text-fill: #32a852;");
             circleID.setFill(Paint.valueOf("#32a852"));
@@ -59,5 +76,39 @@ public class LogInPage {
             pathInformation.setVisible(true);
             fileAbsolutePath = file.getAbsolutePath();
         }
+    }
+
+
+
+    public TextField getUserNameID() {
+        return userNameID;
+    }
+
+    public void setUserNameID(TextField userNameID) {
+        this.userNameID = userNameID;
+    }
+
+    public PasswordField getPasswordID() {
+        return passwordID;
+    }
+
+    public void setPasswordID(PasswordField passwordID) {
+        this.passwordID = passwordID;
+    }
+
+    public String getPasswordApp() {
+        return passwordApp;
+    }
+
+    public void setPasswordApp(String passwordApp) {
+        this.passwordApp = passwordApp;
+    }
+
+    public String getLoginApp() {
+        return loginApp;
+    }
+
+    public void setLoginApp(String loginApp) {
+        this.loginApp = loginApp;
     }
 }
