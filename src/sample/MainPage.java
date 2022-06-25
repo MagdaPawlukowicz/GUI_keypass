@@ -1,22 +1,21 @@
 package sample;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
 
 public class MainPage {
     private Password password;
-    private JSONParser jsonParser = new JSONParser();
-    private JSONArray passwordList = new JSONArray();
+    private List<Password> passwordList = new LinkedList();
     private BufferedWriter writer;
     private Main m = new Main();
 
@@ -69,46 +68,51 @@ public class MainPage {
     }
 
     public void writeFile(Password password, File file) {
-        JSONObject passwordData = new JSONObject();
-        passwordData.put("id", password.getId());
-        passwordData.put("passwordName", codeJSONStringValue(password.getPasswordName()));
-        passwordData.put("login", codeJSONStringValue(password.getLogin()));
-        passwordData.put("password", codeJSONStringValue(password.getPassword()));
-        passwordData.put("passwordURL", codeJSONStringValue(password.getPasswordURL()));
-        passwordList.add(passwordData);
-
+        password = encryptPassword(password);
+        passwordList.add(password);
+        Password[] passwords = passwordList.toArray(Password[]::new);
         try {
             FileWriter passwordsFile = new FileWriter(file, false);
-            passwordsFile.write(passwordList.toJSONString());
-            passwordsFile.flush();
-
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.writeValue(passwordsFile, passwords);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private Password encryptPassword(Password password) {
+        Password encryptedPassword = new Password();
+        encryptedPassword.setId(password.getId());
+        if (password.getPassword() != null) {
+            encryptedPassword.setPassword(codeJSONStringValue(password.getPassword()));
+        }
+        if (password.getLogin() != null) {
+            encryptedPassword.setLogin(codeJSONStringValue(password.getLogin()));
+        }
+        if (password.getPasswordName() != null) {
+            encryptedPassword.setPasswordName(codeJSONStringValue(password.getPasswordName()));
+        }
+        if (password.getPasswordURL() != null) {
+            encryptedPassword.setPasswordURL(codeJSONStringValue(password.getPasswordURL()));
+        }
+        return encryptedPassword;
     }
 
     public void readFile(File file) {
         if (file.exists() && file.length() > 0) {
             try {
                 FileReader passwordsReader = new FileReader(file);
-                Object obj = jsonParser.parse(passwordsReader);
-                passwordList = (JSONArray) obj;
                 ObjectMapper objectMapper = new ObjectMapper();
+                Password[] passwords = objectMapper.readValue(passwordsReader, Password[].class);
+                passwordList = Arrays.asList(passwords);
                 passwordList.forEach(password -> {
-                    try {
-                        Password deserializedPassword = objectMapper.readValue(password.toString(), Password.class);
-                        deserializedPassword = decryptPassword(deserializedPassword);
-                        tableID.getItems().add(deserializedPassword);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                        Password decryptedPassword = decryptPassword(password);
+                        tableID.getItems().add(decryptedPassword);
                 });
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ParseException e) {
                 e.printStackTrace();
             }
         } else if (file.exists() && file.length() == 0) {
@@ -136,7 +140,6 @@ public class MainPage {
         }
         return password;
     }
-
 
     public String codeJSONStringValue (String hasloJakoString){
         char[] haslo = hasloJakoString.toCharArray();
