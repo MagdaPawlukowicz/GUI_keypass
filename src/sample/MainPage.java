@@ -15,7 +15,6 @@ import java.util.UUID;
 
 public class MainPage {
     private Password password;
-    private JSONObject passwordData = new JSONObject();
     private JSONParser jsonParser = new JSONParser();
     private JSONArray passwordList = new JSONArray();
     private BufferedWriter writer;
@@ -55,7 +54,6 @@ public class MainPage {
 
         readFile(LogInPage.file);
         showActualTimeLabel();
-
     }
 
 
@@ -71,7 +69,8 @@ public class MainPage {
     }
 
     public void writeFile(Password password, File file) {
-        passwordData.put("id", codeJSONStringValue(password.getId()));
+        JSONObject passwordData = new JSONObject();
+        passwordData.put("id", password.getId());
         passwordData.put("passwordName", codeJSONStringValue(password.getPasswordName()));
         passwordData.put("login", codeJSONStringValue(password.getLogin()));
         passwordData.put("password", codeJSONStringValue(password.getPassword()));
@@ -123,9 +122,6 @@ public class MainPage {
     }
 
     private Password decryptPassword(Password password) {
-        if (password.getId() != null) {
-            password.setPassword(decodeJSONStringValue(password.getId()));
-        }
         if (password.getPassword() != null) {
             password.setPassword(decodeJSONStringValue(password.getPassword()));
         }

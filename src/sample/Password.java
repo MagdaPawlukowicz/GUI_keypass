@@ -1,7 +1,5 @@
 package sample;
 
-import java.util.Objects;
-
 public class Password {
     private String id;
     private String passwordName = null;
@@ -53,6 +51,10 @@ public class Password {
 
     public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }
 
