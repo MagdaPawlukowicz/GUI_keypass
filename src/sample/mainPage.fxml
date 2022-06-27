@@ -8,7 +8,7 @@
    <center>
       <AnchorPane prefHeight="285.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
-             <Button fx:id="logOutButtonID" layoutX="497.0" layoutY="24.0" mnemonicParsing="false" onAction="#userLogOut" prefHeight="0.0" prefWidth="103.0" style="-fx-background-color: #ed266d;" text="LOG OUT" textFill="white">
+             <Button fx:id="logOutButtonID" layoutX="497.0" layoutY="43.0" mnemonicParsing="false" onAction="#userLogOut" prefHeight="20.0" prefWidth="103.0" style="-fx-background-color: #ed266d;" text="LOG OUT" textFill="white">
                  <font>
                      <Font name="Gill Sans MT Bold" size="12.0" />
                  </font>
@@ -18,9 +18,12 @@
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy></TableView>
             <Label fx:id="timeStamp" layoutX="14.0" layoutY="16.0" prefHeight="17.0" prefWidth="385.0" text="TIME STAMP" textFill="#ed266d" visible="false" />
-            <Button layoutX="26.0" layoutY="22.0" mnemonicParsing="false" text="ADD CATEGORY" />
-            <Button fx:id="deleteRowButton" layoutX="356.0" layoutY="22.0" mnemonicParsing="false" onAction="#deleteRow" text="DELETE ROW" />
-            <Button layoutX="179.0" layoutY="21.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="112.0" text="DELETE CATEGORY" />
+            <Button layoutX="26.0" layoutY="41.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="103.0" text="ADD CATEGORY" />
+            <Button fx:id="deleteRowButton" layoutX="356.0" layoutY="43.0" mnemonicParsing="false" onAction="#deleteRow" prefHeight="22.0" prefWidth="101.0" style="-fx-background-color: #ed266d;" text="DELETE ROW" textFill="WHITE">
+               <font>
+                  <Font name="Gill Sans MT Bold" size="12.0" />
+               </font></Button>
+            <Button layoutX="179.0" layoutY="40.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="112.0" text="DELETE CATEGORY" />
          </children></AnchorPane>
    </center>
    <bottom>
@@ -34,7 +37,10 @@
                <font>
                   <Font name="Gill Sans MT Bold" size="12.0" />
                </font></Button>
-            <Button fx:id="editButton" layoutX="530.0" layoutY="45.0" mnemonicParsing="false" onAction="#editRow" prefHeight="25.0" prefWidth="49.0" text="EDIT" />
+            <Button fx:id="editButton" layoutX="530.0" layoutY="45.0" mnemonicParsing="false" onAction="#editRow" prefHeight="25.0" prefWidth="49.0" style="-fx-background-color: #ed266d;" text="SAVE" textFill="WHITE">
+               <font>
+                  <Font name="Gill Sans MT Bold" size="12.0" />
+               </font></Button>
          </children>
       </AnchorPane>
    </bottom>

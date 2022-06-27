@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -50,10 +51,12 @@ public class MainPage {
         URLs.setCellValueFactory(new PropertyValueFactory<>("passwordURL"));
         tableID.getColumns().add(URLs);
 
+        tableID.setEditable(true);
+        makeColumnsEditable(tableID, names, logins, passwords, URLs);
+
         readFile(LogInPage.file);
         showActualTimeLabel();
     }
-
 
     public void addRow() {
         password = new Password(UUID.randomUUID().toString(), textFieldNameRow.getText(), textFieldLoginRow.getText(),
@@ -79,8 +82,8 @@ public class MainPage {
     }
 
     public void editRow() {
-//        Password selectedItem = (Password) tableID.getSelectionModel().getSelectedItem();
-        tableID.setEditable(true);
+        List<Password> codedPasswordList = codePasswordList(tableID);
+        writeFile(codedPasswordList, LogInPage.file);
     }
 
     public void userLogOut() throws IOException {
@@ -188,5 +191,43 @@ public class MainPage {
         writer.write("Last log in time: " + LocalDate.now() + " " + LocalTime.now());
         writer.close();
         timeStamp.setVisible(true);
+    }
+
+    private void makeColumnsEditable(TableView tableID, TableColumn<Password, String> names,
+                                     TableColumn<Password, String> logins,
+                                     TableColumn<Password, String> passwords,
+                                     TableColumn<Password, String> URLs) {
+
+        names.setCellFactory(TextFieldTableCell.forTableColumn());
+        names.setOnEditCommit(
+                (TableColumn.CellEditEvent<Password, String> t) -> {
+                    ( t.getTableView().getItems().get(
+                            t.getTablePosition().getRow())
+                    ).setPasswordName(t.getNewValue());
+                });
+
+        logins.setCellFactory(TextFieldTableCell.forTableColumn());
+        logins.setOnEditCommit(
+                (TableColumn.CellEditEvent<Password, String> t) -> {
+                    ( t.getTableView().getItems().get(
+                            t.getTablePosition().getRow())
+                    ).setLogin(t.getNewValue());
+                });
+
+        passwords.setCellFactory(TextFieldTableCell.forTableColumn());
+        passwords.setOnEditCommit(
+                (TableColumn.CellEditEvent<Password, String> t) -> {
+                    ( t.getTableView().getItems().get(
+                            t.getTablePosition().getRow())
+                    ).setPassword(t.getNewValue());
+                });
+
+        URLs.setCellFactory(TextFieldTableCell.forTableColumn());
+        URLs.setOnEditCommit(
+                (TableColumn.CellEditEvent<Password, String> t) -> {
+                    ( t.getTableView().getItems().get(
+                            t.getTablePosition().getRow())
+                    ).setPasswordURL(t.getNewValue());
+                });
     }
 }
