@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -12,10 +11,11 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class MainPage {
     private Password password;
-    private List<Password> passwordList = new LinkedList();
+//    private List<Password> passwordList = new LinkedList();
     private BufferedWriter writer;
     private Main m = new Main();
 
@@ -31,8 +31,7 @@ public class MainPage {
     private TextField textFieldURLRow;
     @FXML
     private Label timeStamp;
-    @FXML
-    private Button deleteButton;
+
 
     public void initialize() throws IOException {
         TableColumn<Password, String> names = new TableColumn<>("Name:");
@@ -58,44 +57,47 @@ public class MainPage {
 
     public void addRow() {
         password = new Password(UUID.randomUUID().toString(), textFieldNameRow.getText(), textFieldLoginRow.getText(),
-                textFieldPasswordRow.getText(), textFieldURLRow.getText());
+                    textFieldPasswordRow.getText(), textFieldURLRow.getText());
         tableID.getItems().add(password);
-        writeFile(password, LogInPage.file);
+        List<Password> codedPasswordList = codePasswordList(tableID);
+        writeFile(codedPasswordList, LogInPage.file);
+    }
+
+    public void deleteRow() {
+        Password selectedItem = (Password) tableID.getSelectionModel().getSelectedItem();
+        tableID.getItems().remove(selectedItem);
+        List<Password> codedPasswordList = codePasswordList(tableID);
+        writeFile(codedPasswordList, LogInPage.file);
+    }
+
+    private List<Password> codePasswordList(TableView tableID) {
+        List<Password> codedPasswordList = tableID.getItems();
+        codedPasswordList = codedPasswordList.stream()
+                .map(this::codePassword)
+                .collect(Collectors.toList());
+        return codedPasswordList;
+    }
+
+    public void editRow() {
+//        Password selectedItem = (Password) tableID.getSelectionModel().getSelectedItem();
+        tableID.setEditable(true);
     }
 
     public void userLogOut() throws IOException {
         m.changeScene("loginPage.fxml");
     }
 
-    public void writeFile(Password password, File file) {
-        password = encryptPassword(password);
-        passwordList.add(password);
-        Password[] passwords = passwordList.toArray(Password[]::new);
+    public void writeFile(List <Password> passwordList, File file) {
+        Password[] passwordsArray = passwordList.toArray(Password[]::new);
         try {
             FileWriter passwordsFile = new FileWriter(file, false);
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.writeValue(passwordsFile, passwords);
+            ObjectMapper objectMapper = new ObjectMapper(); //obiekt ktory pozwala na zapisywanie obiektow w formie JSON
+            objectMapper.writeValue(passwordsFile, passwordsArray);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
 
-    private Password encryptPassword(Password password) {
-        Password encryptedPassword = new Password();
-        encryptedPassword.setId(password.getId());
-        if (password.getPassword() != null) {
-            encryptedPassword.setPassword(codeJSONStringValue(password.getPassword()));
-        }
-        if (password.getLogin() != null) {
-            encryptedPassword.setLogin(codeJSONStringValue(password.getLogin()));
-        }
-        if (password.getPasswordName() != null) {
-            encryptedPassword.setPasswordName(codeJSONStringValue(password.getPasswordName()));
-        }
-        if (password.getPasswordURL() != null) {
-            encryptedPassword.setPasswordURL(codeJSONStringValue(password.getPasswordURL()));
-        }
-        return encryptedPassword;
     }
 
     public void readFile(File file) {
@@ -103,11 +105,11 @@ public class MainPage {
             try {
                 FileReader passwordsReader = new FileReader(file);
                 ObjectMapper objectMapper = new ObjectMapper();
-                Password[] passwords = objectMapper.readValue(passwordsReader, Password[].class);
-                passwordList = Arrays.asList(passwords);
+                Password[] passwords = objectMapper.readValue(passwordsReader, Password[].class); // to co zostanie przeczytanie w pliku to tablica passwordow
+                List<Password> passwordList = new LinkedList<>(Arrays.asList(passwords));
                 passwordList.forEach(password -> {
-                        Password decryptedPassword = decryptPassword(password);
-                        tableID.getItems().add(decryptedPassword);
+                        Password decodedPassword = decodePassword(password);
+                        tableID.getItems().add(decodedPassword);
                 });
 
             } catch (FileNotFoundException e) {
@@ -121,27 +123,48 @@ public class MainPage {
                     LogInPage.passwordApp,
                     "KeyPass");
             tableID.getItems().add(password);
-            writeFile(password, LogInPage.file);
+            List<Password> codePasswordList = codePasswordList(tableID);
+            writeFile(codePasswordList, LogInPage.file);
         }
     }
 
-    private Password decryptPassword(Password password) {
+    private Password codePassword(Password password) {
+        Password codedPassword = new Password();
+        codedPassword.setId(password.getId());
         if (password.getPassword() != null) {
-            password.setPassword(decodeJSONStringValue(password.getPassword()));
+            codedPassword.setPassword(codeStringValue(password.getPassword()));
         }
         if (password.getLogin() != null) {
-            password.setLogin(decodeJSONStringValue(password.getLogin()));
+            codedPassword.setLogin(codeStringValue(password.getLogin()));
         }
         if (password.getPasswordName() != null) {
-            password.setPasswordName(decodeJSONStringValue(password.getPasswordName()));
+            codedPassword.setPasswordName(codeStringValue(password.getPasswordName()));
         }
         if (password.getPasswordURL() != null) {
-            password.setPasswordURL(decodeJSONStringValue(password.getPasswordURL()));
+            codedPassword.setPasswordURL(codeStringValue(password.getPasswordURL()));
         }
-        return password;
+        return codedPassword;
     }
 
-    public String codeJSONStringValue (String hasloJakoString){
+    private Password decodePassword(Password password) {
+        Password decodedPassword = new Password();
+        decodedPassword.setId(password.getId());
+        if (password.getPassword() != null) {
+            decodedPassword.setPassword(decodeStringValue(password.getPassword()));
+        }
+        if (password.getLogin() != null) {
+            decodedPassword.setLogin(decodeStringValue(password.getLogin()));
+        }
+        if (password.getPasswordName() != null) {
+            decodedPassword.setPasswordName(decodeStringValue(password.getPasswordName()));
+        }
+        if (password.getPasswordURL() != null) {
+            decodedPassword.setPasswordURL(decodeStringValue(password.getPasswordURL()));
+        }
+        return decodedPassword;
+    }
+
+    public String codeStringValue(String hasloJakoString){
         char[] haslo = hasloJakoString.toCharArray();
         for(int i=0; i< haslo.length; i++){
             char podmianka = (char) (haslo[i]+3);
@@ -150,7 +173,7 @@ public class MainPage {
         return new String(haslo);
     }
 
-    public String decodeJSONStringValue (String hasloJakoString) {
+    public String decodeStringValue(String hasloJakoString) {
         char[] haslo = hasloJakoString.toCharArray();
         for(int i=0; i <  haslo.length; i++){
             char podmianka = (char) (haslo[i]-3);
@@ -165,17 +188,5 @@ public class MainPage {
         writer.write("Last log in time: " + LocalDate.now() + " " + LocalTime.now());
         writer.close();
         timeStamp.setVisible(true);
-    }
-
-    public void deleteRow(){
-            Password selectedItem = (Password) tableID.getSelectionModel().getSelectedItem();
-            tableID.getItems().remove(selectedItem);
-    }
-
-    public static void setText(File file, String text) throws Exception {
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"));
-        bw.write(text, 0, text.length());
-        bw.flush();
-        bw.close();
     }
 }

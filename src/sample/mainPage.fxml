@@ -18,6 +18,9 @@
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy></TableView>
             <Label fx:id="timeStamp" layoutX="14.0" layoutY="16.0" prefHeight="17.0" prefWidth="385.0" text="TIME STAMP" textFill="#ed266d" visible="false" />
+            <Button layoutX="26.0" layoutY="22.0" mnemonicParsing="false" text="ADD CATEGORY" />
+            <Button fx:id="deleteRowButton" layoutX="356.0" layoutY="22.0" mnemonicParsing="false" onAction="#deleteRow" text="DELETE ROW" />
+            <Button layoutX="179.0" layoutY="21.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="112.0" text="DELETE CATEGORY" />
          </children></AnchorPane>
    </center>
    <bottom>
@@ -27,14 +30,11 @@
             <TextField fx:id="textFieldLoginRow" layoutX="75.0" layoutY="18.0" prefHeight="25.0" prefWidth="133.0" promptText="Login" />
             <TextField fx:id="textFieldPasswordRow" layoutX="208.0" layoutY="18.0" prefHeight="25.0" prefWidth="124.0" promptText="Password" />
             <TextField fx:id="textFieldURLRow" layoutX="332.0" layoutY="18.0" prefHeight="25.0" prefWidth="176.0" promptText="URL" />
-            <Button fx:id="addRowButton" layoutX="531.0" layoutY="18.0" mnemonicParsing="false" onAction="#addRow" prefHeight="25.0" prefWidth="48.0" style="-fx-background-color: #ed266d;" text="ADD" textFill="WHITE">
+            <Button fx:id="addRowButton" layoutX="531.0" layoutY="17.0" mnemonicParsing="false" onAction="#addRow" prefHeight="25.0" prefWidth="48.0" style="-fx-background-color: #ed266d;" text="ADD" textFill="WHITE">
                <font>
                   <Font name="Gill Sans MT Bold" size="12.0" />
                </font></Button>
-            <Button layoutX="126.0" layoutY="59.0" mnemonicParsing="false" text="DELETE CATEGORY" />
-            <Button layoutX="249.0" layoutY="59.0" mnemonicParsing="false" text="ADD CATEGORY" />
-            <Button layoutX="389.0" layoutY="59.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="91.0" text="EDIT" />
-            <Button fx:id="deleteRowButton" layoutX="488.0" layoutY="59.0" mnemonicParsing="false" onAction="#deleteRow" text="DELETE ROW" />
+            <Button fx:id="editButton" layoutX="530.0" layoutY="45.0" mnemonicParsing="false" onAction="#editRow" prefHeight="25.0" prefWidth="49.0" text="EDIT" />
          </children>
       </AnchorPane>
    </bottom>
