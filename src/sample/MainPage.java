@@ -1,6 +1,7 @@
 package sample;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.webkit.network.URLs;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -17,9 +18,11 @@ public class MainPage {
     private BufferedWriter writer;
     private Main m = new Main();
     private List <String> categories = new LinkedList<>();
+    private BufferedReader reader;
+    private String categoriesFilePath= "src/data/categories.txt";
 
     @FXML
-    private TableView tableID;
+    private TableView tableView;
     @FXML
     private TextField textFieldNameRow;
     @FXML
@@ -36,70 +39,107 @@ public class MainPage {
     private ChoiceBox<String> categoriesChoiceBox;
     @FXML
     private TextField addCategoryTextField;
+    @FXML
+    private ChoiceBox<String> addCategoriesChoiceBox;
 
 
 
     public void initialize() throws IOException {
         TableColumn<Password, String> names = new TableColumn<>("Name:");
         names.setCellValueFactory(new PropertyValueFactory<>("passwordName"));
-        tableID.getColumns().add(names);
+        tableView.getColumns().add(names);
 
         TableColumn<Password, String> logins = new TableColumn<>("Login:");
         logins.setCellValueFactory(new PropertyValueFactory<>("login"));
-        tableID.getColumns().add(logins);
+        tableView.getColumns().add(logins);
 
         TableColumn<Password, String> passwords = new TableColumn<>("Password:");
         passwords.setCellValueFactory(new PropertyValueFactory<>("password"));
-        tableID.getColumns().add(passwords);
+        tableView.getColumns().add(passwords);
 
         TableColumn<Password, String> URLs = new TableColumn<>("URL:");
         URLs.setCellValueFactory(new PropertyValueFactory<>("passwordURL"));
-        tableID.getColumns().add(URLs);
+        tableView.getColumns().add(URLs);
 
-        tableID.setEditable(true);
-        makeColumnsEditable(tableID, names, logins, passwords, URLs);
+        TableColumn<Password, String> categories = new TableColumn<>("Category:");
+        categories.setCellValueFactory(new PropertyValueFactory<>("category"));
+        tableView.getColumns().add(categories);
 
+        tableView.setEditable(true);
+        makeColumnsEditable(tableView, names, logins, passwords, URLs);
+        getCategories();
         readFile(LogInPage.file);
         showActualTimeLabel();
     }
 
     public void addRow() {
         password = new Password(UUID.randomUUID().toString(), textFieldNameRow.getText(), textFieldLoginRow.getText(),
-                    textFieldPasswordRow.getText(), textFieldURLRow.getText());
-        tableID.getItems().add(password);
-        List<Password> codedPasswordList = codePasswordList(tableID);
+                    textFieldPasswordRow.getText(), textFieldURLRow.getText(), addCategoriesChoiceBox.getValue());
+        tableView.getItems().add(password);
+        List<Password> codedPasswordList = codePasswordList(tableView);
         writeFile(codedPasswordList, LogInPage.file);
     }
 
     public void deleteRow() {
-        Password selectedItem = (Password) tableID.getSelectionModel().getSelectedItem();
-        tableID.getItems().remove(selectedItem);
-        List<Password> codedPasswordList = codePasswordList(tableID);
+        Password selectedItem = (Password) tableView.getSelectionModel().getSelectedItem();
+        tableView.getItems().remove(selectedItem);
+        List<Password> codedPasswordList = codePasswordList(tableView);
         writeFile(codedPasswordList, LogInPage.file);
-    }
-
-    private List<Password> codePasswordList(TableView tableID) {
-        List<Password> codedPasswordList = tableID.getItems();
-        codedPasswordList = codedPasswordList.stream()
-                .map(this::codePassword)
-                .collect(Collectors.toList());
-        return codedPasswordList;
     }
 
     public void editRow() {
-        List<Password> codedPasswordList = codePasswordList(tableID);
+        List<Password> codedPasswordList = codePasswordList(tableView);
         writeFile(codedPasswordList, LogInPage.file);
         savedInformationLabel.setText("SAVED DATA");
         savedInformationLabel.setVisible(true);
-
         }
 
-    public void deleteCategory(){
-
+    private void getCategories() {
+        try {
+            reader = new BufferedReader(new FileReader(categoriesFilePath));
+            while(reader.ready()) {
+                String value = reader.readLine();
+                categoriesChoiceBox.getItems().add(value);
+                addCategoriesChoiceBox.getItems().add(value);
+                categories.add(value);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
+    public void deleteCategory(){
+        String selectedCategory= categoriesChoiceBox.getSelectionModel().getSelectedItem();
+        categoriesChoiceBox.getItems().remove(selectedCategory);
+        addCategoriesChoiceBox.getItems().remove(selectedCategory);
+        categories.remove(selectedCategory);
+        try {
+            writer = new BufferedWriter(new FileWriter(categoriesFilePath));
+            for (String category:categories) {
+                writer.write(category+"\n");
+            }
+            writer.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void addCategory(){
-        categories.add(addCategoryTextField.getText());
         categoriesChoiceBox.getItems().add(addCategoryTextField.getText());
+        addCategoriesChoiceBox.getItems().add(addCategoryTextField.getText());
+        try {
+            writer = new BufferedWriter(new FileWriter(categoriesFilePath, true));
+            writer.write(addCategoryTextField.getText());
+            writer.write("\n");
+            writer.close();
+            categories.add(addCategoryTextField.getText());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void userLogOut() throws IOException {
@@ -128,7 +168,7 @@ public class MainPage {
                 List<Password> passwordList = new LinkedList<>(Arrays.asList(passwords));
                 passwordList.forEach(password -> {
                         Password decodedPassword = decodePassword(password);
-                        tableID.getItems().add(decodedPassword);
+                        tableView.getItems().add(decodedPassword);
                 });
 
             } catch (FileNotFoundException e) {
@@ -140,16 +180,25 @@ public class MainPage {
             password = new Password(UUID.randomUUID().toString(), "KeyPass",
                     LogInPage.loginApp,
                     LogInPage.passwordApp,
-                    "KeyPass");
-            tableID.getItems().add(password);
-            List<Password> codePasswordList = codePasswordList(tableID);
+                    "KeyPass",
+                    "aplikacje");
+            tableView.getItems().add(password);
+            List<Password> codePasswordList = codePasswordList(tableView);
             writeFile(codePasswordList, LogInPage.file);
         }
+    }
+    private List<Password> codePasswordList(TableView tableID) {
+        List<Password> codedPasswordList = tableID.getItems();
+        codedPasswordList = codedPasswordList.stream()
+                .map(this::codePassword)
+                .collect(Collectors.toList());
+        return codedPasswordList;
     }
 
     private Password codePassword(Password password) {
         Password codedPassword = new Password();
         codedPassword.setId(password.getId());
+        codedPassword.setCategory(password.getCategory());
         if (password.getPassword() != null) {
             codedPassword.setPassword(codeStringValue(password.getPassword()));
         }
@@ -168,6 +217,7 @@ public class MainPage {
     private Password decodePassword(Password password) {
         Password decodedPassword = new Password();
         decodedPassword.setId(password.getId());
+        decodedPassword.setCategory(password.getCategory());
         if (password.getPassword() != null) {
             decodedPassword.setPassword(decodeStringValue(password.getPassword()));
         }

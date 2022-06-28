@@ -7,10 +7,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
-
 import java.io.*;
-import java.time.LocalDate;
-import java.time.LocalTime;
+
 
 public class LogInPage {
     @FXML
