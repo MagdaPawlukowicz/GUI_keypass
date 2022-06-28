@@ -22,11 +22,11 @@
                <font>
                   <Font name="Gill Sans MT Bold" size="12.0" />
                </font></Button>
-            <Button layoutX="208.0" layoutY="42.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="145.0" style="-fx-background-color: #ed266d;" text="DELETE CATEGORY" textFill="WHITE">
+            <Button fx:id="deleteCategoryButton" layoutX="208.0" layoutY="42.0" mnemonicParsing="false" onAction="#deleteCategory" prefHeight="25.0" prefWidth="145.0" style="-fx-background-color: #ed266d;" text="DELETE CATEGORY" textFill="WHITE">
                <font>
                   <Font name="Gill Sans MT Bold" size="12.0" />
                </font></Button>
-            <ChoiceBox layoutX="-2.0" layoutY="42.0" prefHeight="23.0" prefWidth="210.0" />
+            <ChoiceBox fx:id="categoriesChoiceBox" layoutX="-2.0" layoutY="42.0" prefHeight="23.0" prefWidth="210.0" />
          </children></AnchorPane>
    </center>
    <bottom>
@@ -44,11 +44,11 @@
                <font>
                   <Font name="Gill Sans MT Bold" size="12.0" />
                </font></Button>
-            <Button layoutX="209.0" layoutY="45.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="129.0" style="-fx-background-color: #ed266d;" text="ADD CATEGORY" textFill="WHITE">
+            <Button fx:id="addCategoryButton" layoutX="209.0" layoutY="45.0" mnemonicParsing="false" onAction="#addCategory" prefHeight="24.0" prefWidth="129.0" style="-fx-background-color: #ed266d;" text="ADD CATEGORY" textFill="WHITE">
                <font>
                   <Font name="Gill Sans MT Bold" size="12.0" />
                </font></Button>
-            <TextField layoutY="45.0" prefHeight="25.0" prefWidth="208.0" promptText="New category name" />
+            <TextField fx:id="addCategoryTextField" layoutY="45.0" prefHeight="25.0" prefWidth="208.0" promptText="New category name" />
             <Label fx:id="savedInformationLabel" contentDisplay="CENTER" layoutX="394.0" layoutY="48.0" prefHeight="17.0" prefWidth="102.0" text="SAVED" textFill="#ed266d" visible="false" />
          </children>
       </AnchorPane>

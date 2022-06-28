@@ -5,8 +5,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-
-import java.awt.event.ActionListener;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -18,6 +16,7 @@ public class MainPage {
 //    private List<Password> passwordList = new LinkedList();
     private BufferedWriter writer;
     private Main m = new Main();
+    private List <String> categories = new LinkedList<>();
 
     @FXML
     private TableView tableID;
@@ -33,6 +32,11 @@ public class MainPage {
     private Label timeStamp;
     @FXML
     private Label savedInformationLabel;
+    @FXML
+    private ChoiceBox<String> categoriesChoiceBox;
+    @FXML
+    private TextField addCategoryTextField;
+
 
 
     public void initialize() throws IOException {
@@ -85,11 +89,18 @@ public class MainPage {
     public void editRow() {
         List<Password> codedPasswordList = codePasswordList(tableID);
         writeFile(codedPasswordList, LogInPage.file);
-        System.currentTimeMillis();
         savedInformationLabel.setText("SAVED DATA");
         savedInformationLabel.setVisible(true);
 
         }
+
+    public void deleteCategory(){
+
+    }
+    public void addCategory(){
+        categories.add(addCategoryTextField.getText());
+        categoriesChoiceBox.getItems().add(addCategoryTextField.getText());
+    }
 
     public void userLogOut() throws IOException {
         m.changeScene("loginPage.fxml");
