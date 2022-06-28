@@ -5,13 +5,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+
+import java.awt.event.ActionListener;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class MainPage {
@@ -32,6 +31,8 @@ public class MainPage {
     private TextField textFieldURLRow;
     @FXML
     private Label timeStamp;
+    @FXML
+    private Label savedInformationLabel;
 
 
     public void initialize() throws IOException {
@@ -84,7 +85,11 @@ public class MainPage {
     public void editRow() {
         List<Password> codedPasswordList = codePasswordList(tableID);
         writeFile(codedPasswordList, LogInPage.file);
-    }
+        System.currentTimeMillis();
+        savedInformationLabel.setText("SAVED DATA");
+        savedInformationLabel.setVisible(true);
+
+        }
 
     public void userLogOut() throws IOException {
         m.changeScene("loginPage.fxml");
