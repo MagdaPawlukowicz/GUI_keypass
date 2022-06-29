@@ -1,9 +1,4 @@
 package sample;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Objects;
 
 public class Password {
@@ -13,10 +8,10 @@ public class Password {
     private String password = null;
     private String passwordURL = null;
     private String category = null;
-    BufferedWriter writer = null;
 
     public Password() {
     }
+
     public Password(String id, String passwordName, String login, String password, String passwordURL, String category) {
         this.id = id;
         this.passwordName = passwordName;
@@ -72,14 +67,6 @@ public class Password {
 
     public void setCategory(String category) {
         this.category = category;
-//        try {
-//            writer = new BufferedWriter(new FileWriter("src/data/categories.txt",true));
-//            writer.write(category);
-//            writer.write("\n");
-//            writer.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
     }
 
     @Override

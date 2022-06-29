@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
+
 import java.io.*;
 
 
@@ -41,7 +42,7 @@ public class LogInPage {
         }
     }
 
-    public void userLogIn () throws IOException {
+    public void userLogIn() throws IOException {
         checkLogIn();
     }
 
@@ -51,7 +52,7 @@ public class LogInPage {
             wrongLogInID.setStyle("-fx-text-fill: #32a852;");
             circleID.setFill(Paint.valueOf("#32a852"));
             m.changeScene("mainPage.fxml");
-        } else if (userNameID.getText().isEmpty() && passwordID.getText().isEmpty()){
+        } else if (userNameID.getText().isEmpty() && passwordID.getText().isEmpty()) {
             wrongLogInID.setText("NO DATA");
             wrongLogInID.setStyle("-fx-text-fill: #ff0000;");
             circleID.setFill(Paint.valueOf("#ff0000"));
@@ -69,13 +70,12 @@ public class LogInPage {
         fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
         file = fc.showOpenDialog(null);
 
-        if (file != null ) {
+        if (file != null) {
             pathInformation.setText("Selected file: " + file.getAbsolutePath());
             pathInformation.setVisible(true);
             fileAbsolutePath = file.getAbsolutePath();
         }
     }
-
 
 
     public TextField getUserNameID() {

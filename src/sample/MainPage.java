@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -14,12 +15,12 @@ import java.util.stream.Collectors;
 
 public class MainPage {
     private Password password;
-//    private List<Password> passwordList = new LinkedList();
+    //    private List<Password> passwordList = new LinkedList();
     private BufferedWriter writer;
     private Main m = new Main();
-    private List <String> categories = new LinkedList<>();
+    private List<String> categories = new LinkedList<>();
     private BufferedReader reader;
-    private String categoriesFilePath= "src/data/categories.txt";
+    private String categoriesFilePath = "src/data/categories.txt";
 
     @FXML
     private TableView tableView;
@@ -41,7 +42,6 @@ public class MainPage {
     private TextField addCategoryTextField;
     @FXML
     private ChoiceBox<String> addCategoriesChoiceBox;
-
 
 
     public void initialize() throws IOException {
@@ -74,7 +74,7 @@ public class MainPage {
 
     public void addRow() {
         password = new Password(UUID.randomUUID().toString(), textFieldNameRow.getText(), textFieldLoginRow.getText(),
-                    textFieldPasswordRow.getText(), textFieldURLRow.getText(), addCategoriesChoiceBox.getValue());
+                textFieldPasswordRow.getText(), textFieldURLRow.getText(), addCategoriesChoiceBox.getValue());
         tableView.getItems().add(password);
         List<Password> codedPasswordList = codePasswordList(tableView);
         writeFile(codedPasswordList, LogInPage.file);
@@ -92,12 +92,12 @@ public class MainPage {
         writeFile(codedPasswordList, LogInPage.file);
         savedInformationLabel.setText("SAVED DATA");
         savedInformationLabel.setVisible(true);
-        }
+    }
 
     private void getCategories() {
         try {
             reader = new BufferedReader(new FileReader(categoriesFilePath));
-            while(reader.ready()) {
+            while (reader.ready()) {
                 String value = reader.readLine();
                 categoriesChoiceBox.getItems().add(value);
                 addCategoriesChoiceBox.getItems().add(value);
@@ -110,15 +110,15 @@ public class MainPage {
         }
     }
 
-    public void deleteCategory(){
-        String selectedCategory= categoriesChoiceBox.getSelectionModel().getSelectedItem();
+    public void deleteCategory() {
+        String selectedCategory = categoriesChoiceBox.getSelectionModel().getSelectedItem();
         categoriesChoiceBox.getItems().remove(selectedCategory);
         addCategoriesChoiceBox.getItems().remove(selectedCategory);
         categories.remove(selectedCategory);
         try {
             writer = new BufferedWriter(new FileWriter(categoriesFilePath));
-            for (String category:categories) {
-                writer.write(category+"\n");
+            for (String category : categories) {
+                writer.write(category + "\n");
             }
             writer.close();
         } catch (FileNotFoundException e) {
@@ -130,7 +130,7 @@ public class MainPage {
     }
 
     public void deleteObjectsFromCategory(String selectedCategory) {
-        List <Password> passwords = new LinkedList<>(tableView.getItems());
+        List<Password> passwords = new LinkedList<>(tableView.getItems());
         for (Password password : passwords) {
             if (password.getCategory().equals(selectedCategory)) {
                 tableView.getItems().remove(password);
@@ -141,11 +141,11 @@ public class MainPage {
 
     }
 
-    public void addCategory(){
+    public void addCategory() {
         addCategory(addCategoryTextField.getText());
     }
 
-    private void addCategory(String categoryName){
+    private void addCategory(String categoryName) {
         categoriesChoiceBox.getItems().add(categoryName);
         addCategoriesChoiceBox.getItems().add(categoryName);
         try {
@@ -162,7 +162,7 @@ public class MainPage {
         m.changeScene("loginPage.fxml");
     }
 
-    public void writeFile(List <Password> passwordList, File file) {
+    public void writeFile(List<Password> passwordList, File file) {
         Password[] passwordsArray = passwordList.toArray(Password[]::new);
         try {
             FileWriter passwordsFile = new FileWriter(file, false);
@@ -183,8 +183,8 @@ public class MainPage {
                 Password[] passwords = objectMapper.readValue(passwordsReader, Password[].class); // to co zostanie przeczytanie w pliku to tablica passwordow
                 List<Password> passwordList = new LinkedList<>(Arrays.asList(passwords));
                 passwordList.forEach(password -> {
-                        Password decodedPassword = decodePassword(password);
-                        tableView.getItems().add(decodedPassword);
+                    Password decodedPassword = decodePassword(password);
+                    tableView.getItems().add(decodedPassword);
                 });
                 if (passwordList.size() == 0) {
                     addDefaultPasswordToFile();
@@ -258,10 +258,10 @@ public class MainPage {
         return decodedPassword;
     }
 
-    public String codeStringValue(String hasloJakoString){
+    public String codeStringValue(String hasloJakoString) {
         char[] haslo = hasloJakoString.toCharArray();
-        for(int i=0; i< haslo.length; i++){
-            char podmianka = (char) (haslo[i]+3);
+        for (int i = 0; i < haslo.length; i++) {
+            char podmianka = (char) (haslo[i] + 3);
             haslo[i] = podmianka;
         }
         return new String(haslo);
@@ -269,8 +269,8 @@ public class MainPage {
 
     public String decodeStringValue(String hasloJakoString) {
         char[] haslo = hasloJakoString.toCharArray();
-        for(int i=0; i <  haslo.length; i++){
-            char podmianka = (char) (haslo[i]-3);
+        for (int i = 0; i < haslo.length; i++) {
+            char podmianka = (char) (haslo[i] - 3);
             haslo[i] = podmianka;
         }
         return new String(haslo);
@@ -292,7 +292,7 @@ public class MainPage {
         names.setCellFactory(TextFieldTableCell.forTableColumn());
         names.setOnEditCommit(
                 (TableColumn.CellEditEvent<Password, String> t) -> {
-                    ( t.getTableView().getItems().get(
+                    (t.getTableView().getItems().get(
                             t.getTablePosition().getRow())
                     ).setPasswordName(t.getNewValue());
                 });
@@ -300,7 +300,7 @@ public class MainPage {
         logins.setCellFactory(TextFieldTableCell.forTableColumn());
         logins.setOnEditCommit(
                 (TableColumn.CellEditEvent<Password, String> t) -> {
-                    ( t.getTableView().getItems().get(
+                    (t.getTableView().getItems().get(
                             t.getTablePosition().getRow())
                     ).setLogin(t.getNewValue());
                 });
@@ -308,7 +308,7 @@ public class MainPage {
         passwords.setCellFactory(TextFieldTableCell.forTableColumn());
         passwords.setOnEditCommit(
                 (TableColumn.CellEditEvent<Password, String> t) -> {
-                    ( t.getTableView().getItems().get(
+                    (t.getTableView().getItems().get(
                             t.getTablePosition().getRow())
                     ).setPassword(t.getNewValue());
                 });
@@ -316,7 +316,7 @@ public class MainPage {
         URLs.setCellFactory(TextFieldTableCell.forTableColumn());
         URLs.setOnEditCommit(
                 (TableColumn.CellEditEvent<Password, String> t) -> {
-                    ( t.getTableView().getItems().get(
+                    (t.getTableView().getItems().get(
                             t.getTablePosition().getRow())
                     ).setPasswordURL(t.getNewValue());
                 });
