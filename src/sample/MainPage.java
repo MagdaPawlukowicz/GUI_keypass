@@ -126,17 +126,33 @@ public class MainPage {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        deleteObjectsFromCategory(selectedCategory);
+    }
+
+    public void deleteObjectsFromCategory(String selectedCategory) {
+        List <Password> passwords = new LinkedList<>(tableView.getItems());
+        for (Password password : passwords) {
+            if (password.getCategory().equals(selectedCategory)) {
+                tableView.getItems().remove(password);
+            }
+        }
+        passwords = codePasswordList(tableView);
+        writeFile(passwords, LogInPage.file);
+
     }
 
     public void addCategory(){
-        categoriesChoiceBox.getItems().add(addCategoryTextField.getText());
-        addCategoriesChoiceBox.getItems().add(addCategoryTextField.getText());
+        addCategory(addCategoryTextField.getText());
+    }
+
+    private void addCategory(String categoryName){
+        categoriesChoiceBox.getItems().add(categoryName);
+        addCategoriesChoiceBox.getItems().add(categoryName);
         try {
             writer = new BufferedWriter(new FileWriter(categoriesFilePath, true));
-            writer.write(addCategoryTextField.getText());
-            writer.write("\n");
+            writer.write(categoryName + "\n");
             writer.close();
-            categories.add(addCategoryTextField.getText());
+            categories.add(categoryName);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -170,23 +186,32 @@ public class MainPage {
                         Password decodedPassword = decodePassword(password);
                         tableView.getItems().add(decodedPassword);
                 });
-
+                if (passwordList.size() == 0) {
+                    addDefaultPasswordToFile();
+                }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else if (file.exists() && file.length() == 0) {
-            password = new Password(UUID.randomUUID().toString(), "KeyPass",
-                    LogInPage.loginApp,
-                    LogInPage.passwordApp,
-                    "KeyPass",
-                    "aplikacje");
-            tableView.getItems().add(password);
-            List<Password> codePasswordList = codePasswordList(tableView);
-            writeFile(codePasswordList, LogInPage.file);
+            addDefaultPasswordToFile();
         }
     }
+
+    private void addDefaultPasswordToFile() {
+        String categoryName = "aplikacje";
+        password = new Password(UUID.randomUUID().toString(), "KeyPass",
+                LogInPage.loginApp,
+                LogInPage.passwordApp,
+                "KeyPass",
+                categoryName);
+        addCategory(categoryName);
+        tableView.getItems().add(password);
+        List<Password> codePasswordList = codePasswordList(tableView);
+        writeFile(codePasswordList, LogInPage.file);
+    }
+
     private List<Password> codePasswordList(TableView tableID) {
         List<Password> codedPasswordList = tableID.getItems();
         codedPasswordList = codedPasswordList.stream()
