@@ -13,13 +13,14 @@ public class Password {
     public Password() {
     }
 
-    public Password(String id, String passwordName, String login, String password, String passwordURL, String category) {
+    public Password(String id, String passwordName, String login, String password, String passwordURL, String category, PasswordType passwordType) {
         this.id = id;
         this.passwordName = passwordName;
         this.login = login;
         this.password = password;
         this.passwordURL = passwordURL;
         this.category = category;
+        this.passwordType = passwordType;
     }
 
     public String getPasswordName() {

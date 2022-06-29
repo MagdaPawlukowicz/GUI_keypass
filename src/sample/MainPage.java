@@ -1,7 +1,6 @@
 package sample;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.webkit.network.URLs;
+import com.fasterxml.jackson.databind.ObjectMapper;;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -17,7 +16,7 @@ public class MainPage {
     private Password password;
     static String passwordApp = "123";
     static String loginApp = "user";
-    //    private List<Password> passwordList = new LinkedList();
+    private String categoryNameApp = "-";
     private BufferedWriter writer;
     private Main m = new Main();
     private List<String> categories = new LinkedList<>();
@@ -76,7 +75,7 @@ public class MainPage {
 
     public void addRow() {
         password = new Password(UUID.randomUUID().toString(), textFieldNameRow.getText(), textFieldLoginRow.getText(),
-                textFieldPasswordRow.getText(), textFieldURLRow.getText(), addCategoriesChoiceBox.getValue());
+                textFieldPasswordRow.getText(), textFieldURLRow.getText(), addCategoriesChoiceBox.getValue(), PasswordType.BASIC);
         tableView.getItems().add(password);
         List<Password> codedPasswordList = codePasswordList(tableView);
         writeFile(codedPasswordList, LogInPage.file);
@@ -85,7 +84,7 @@ public class MainPage {
     public void deleteRow() {
         Password selectedItem = (Password) tableView.getSelectionModel().getSelectedItem();
         List <Password> passwords = new LinkedList<>(tableView.getItems());
-        if (!PasswordType.GLOWNE.equals(selectedItem.getPasswordType())) {
+        if (!PasswordType.MAIN.equals(selectedItem.getPasswordType())) {
             tableView.getItems().remove(selectedItem);
             List<Password> codedPasswordList = codePasswordList(tableView);
             writeFile(codedPasswordList, LogInPage.file);
@@ -147,8 +146,9 @@ public class MainPage {
     }
 
     public void addCategory() {
-        if (!isCategoryExisting(addCategoryTextField.getText())) {
-            addCategory(addCategoryTextField.getText());
+        String categoryTextField =addCategoryTextField.getText();
+        if (!isCategoryExisting(categoryTextField) && !categoryTextField.equals(categoryNameApp)) {
+            addCategory(categoryTextField);
         }
     }
 
@@ -207,15 +207,12 @@ public class MainPage {
     }
 
     private void addDefaultPasswordToFile() {
-        String categoryName = "aplikacje";
-        if (!isCategoryExisting(categoryName)){ addCategory(categoryName);};
-
         password = new Password(UUID.randomUUID().toString(), "KeyPass",
                 loginApp,
                 passwordApp,
                 "KeyPass",
-                categoryName);
-        password.setPasswordType(PasswordType.GLOWNE);
+                categoryNameApp,
+                PasswordType.MAIN);
 
         tableView.getItems().add(password);
         List<Password> codePasswordList = codePasswordList(tableView);
@@ -310,6 +307,14 @@ public class MainPage {
             e.printStackTrace();
         }
         return isExisting;
+    }
+
+    private String getMainPassword(){
+        return "";
+    }
+
+    private String getMainLogin(){
+        return "";
     }
 
     private void makeColumnsEditable(TableView tableID, TableColumn<Password, String> names,
