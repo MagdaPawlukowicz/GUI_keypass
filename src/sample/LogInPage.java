@@ -32,7 +32,7 @@ public class LogInPage {
     private static BufferedReader reader;
 
 
-    public void initialize() throws IOException {
+    public void initialize() {
         try {
             reader = new BufferedReader(new FileReader("src/data/lastLogInTime.txt"));
             lastLogInInformation.setText(reader.readLine());
@@ -45,20 +45,24 @@ public class LogInPage {
         checkLogIn();
     }
 
-    private void checkLogIn() throws IOException {
+    private void checkLogIn() throws IOException{
         if (mainPage.getMainLogin(file).equals(userNameID.getText())
                 && mainPage.getMainPassword(file).equals(passwordID.getText())
-                && fileAbsolutePath != null) {
+                && file != null) {
             wrongLogInID.setText("SUCCESS");
             wrongLogInID.setStyle("-fx-text-fill: #32a852;");
             circleID.setFill(Paint.valueOf("#32a852"));
             m.changeScene("mainPage.fxml");
-        } else if (userNameID.getText().isEmpty() && passwordID.getText().isEmpty()) {
-            wrongLogInID.setText("NO DATA");
-            wrongLogInID.setStyle("-fx-text-fill: #ff0000;");
-            circleID.setFill(Paint.valueOf("#ff0000"));
+        }else if(file == null){
+            wrongLogInID.setText("UPLOAD JSON FILE");
+            wrongLogInID.setStyle("-fx-text-fill: #ff7700;");
+            circleID.setFill(Paint.valueOf("#ff7700"));
+        }else if ((userNameID.getText().isEmpty() && passwordID.getText().isEmpty())) {
+            wrongLogInID.setText("WRITE DOWN ALL DATA");
+            wrongLogInID.setStyle("-fx-text-fill: #ff7700;");
+            circleID.setFill(Paint.valueOf("#ff7700"));
         } else {
-            wrongLogInID.setText("WRONG USERNAME OR PASSWORD");
+            wrongLogInID.setText("CHECK YOUR DATA");
             wrongLogInID.setStyle("-fx-text-fill: #ff7700;");
             circleID.setFill(Paint.valueOf("#ff7700"));
         }

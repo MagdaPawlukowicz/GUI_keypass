@@ -8,6 +8,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -85,6 +86,7 @@ public class MainPage {
 
     public void deleteRow() {
         Password selectedItem = (Password) tableView.getSelectionModel().getSelectedItem();
+        if (selectedItem == null) return;
         List<Password> passwords = new LinkedList<>(tableView.getItems());
         if (!PasswordType.MAIN.equals(selectedItem.getPasswordType())) {
             tableView.getItems().remove(selectedItem);
@@ -96,6 +98,7 @@ public class MainPage {
 
     public void editRow() {
         Password selectedItem = (Password) tableView.getSelectionModel().getSelectedItem();
+        if (selectedItem == null) return;
         passwordList.remove(selectedItem);
         passwordList.add(selectedItem);
         List<Password> codedPasswordList = codePasswordList(passwordList);
@@ -122,6 +125,7 @@ public class MainPage {
 
     public void deleteCategory() {
         String selectedCategory = categoriesChoiceBox.getSelectionModel().getSelectedItem();
+        if (selectedCategory == null) return;
         if (!selectedCategory.equals(defaultCategoryName)) {
             categoriesChoiceBox.getItems().remove(selectedCategory);
             addCategoriesChoiceBox.getItems().remove(selectedCategory);
@@ -279,28 +283,28 @@ public class MainPage {
         return decodedPassword;
     }
 
-    public String codeStringValue(String hasloJakoString) {
-        char[] haslo = hasloJakoString.toCharArray();
-        for (int i = 0; i < haslo.length; i++) {
-            char podmianka = (char) (haslo[i] + 3);
-            haslo[i] = podmianka;
+    public String codeStringValue(String passwordAsString) {
+        char[] password = passwordAsString.toCharArray();
+        for (int i = 0; i < password.length; i++) {
+            char codedLetter = (char) (password[i] + 3);
+            password[i] = codedLetter;
         }
-        return new String(haslo);
+        return new String(password);
     }
 
-    public String decodeStringValue(String hasloJakoString) {
-        char[] haslo = hasloJakoString.toCharArray();
-        for (int i = 0; i < haslo.length; i++) {
-            char podmianka = (char) (haslo[i] - 3);
-            haslo[i] = podmianka;
+    public String decodeStringValue(String passwordAsString) {
+        char[] password = passwordAsString.toCharArray();
+        for (int i = 0; i < password.length; i++) {
+            char decodedLetter = (char) (password[i] - 3);
+            password[i] = decodedLetter;
         }
-        return new String(haslo);
+        return new String(password);
     }
 
     public void showActualTimeLabel() throws IOException {
-        timeStamp.setText("Last log in time: " + LocalDate.now() + " " + LocalTime.now());
+        timeStamp.setText("LOG IN TIME: " + LocalDate.now() + " " + LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm")));
         writer = new BufferedWriter(new FileWriter("src/data/lastLogInTime.txt"));
-        writer.write("Last log in time: " + LocalDate.now() + " " + LocalTime.now());
+        writer.write("LAST LOG IN TIME: " + LocalDate.now() + " " + LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm")));
         writer.close();
         timeStamp.setVisible(true);
     }
@@ -349,7 +353,7 @@ public class MainPage {
 
         public String getMainLogin (File file) {
             String mainLogin = null;
-            if (file.exists() && file.length() > 0) {
+            if (file != null && file.exists() && file.length() > 0) {
                 try {
                     FileReader passwordsReader = new FileReader(file);
                     ObjectMapper objectMapper = new ObjectMapper();
