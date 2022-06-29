@@ -28,8 +28,6 @@ public class LogInPage {
     private final Main m = new Main();
     static File file;
     String fileAbsolutePath;
-    static String passwordApp = "123";
-    static String loginApp = "user";
     private static BufferedReader reader;
 
 
@@ -47,7 +45,7 @@ public class LogInPage {
     }
 
     private void checkLogIn() throws IOException {
-        if (loginApp.equals(userNameID.getText()) && passwordApp.equals(passwordID.getText()) && fileAbsolutePath != null) {
+        if (MainPage.loginApp.equals(userNameID.getText()) && MainPage.passwordApp.equals(passwordID.getText()) && fileAbsolutePath != null) {
             wrongLogInID.setText("SUCCESS");
             wrongLogInID.setStyle("-fx-text-fill: #32a852;");
             circleID.setFill(Paint.valueOf("#32a852"));
@@ -77,36 +75,4 @@ public class LogInPage {
         }
     }
 
-
-    public TextField getUserNameID() {
-        return userNameID;
-    }
-
-    public void setUserNameID(TextField userNameID) {
-        this.userNameID = userNameID;
-    }
-
-    public PasswordField getPasswordID() {
-        return passwordID;
-    }
-
-    public void setPasswordID(PasswordField passwordID) {
-        this.passwordID = passwordID;
-    }
-
-    public String getPasswordApp() {
-        return passwordApp;
-    }
-
-    public void setPasswordApp(String passwordApp) {
-        this.passwordApp = passwordApp;
-    }
-
-    public String getLoginApp() {
-        return loginApp;
-    }
-
-    public void setLoginApp(String loginApp) {
-        this.loginApp = loginApp;
-    }
 }

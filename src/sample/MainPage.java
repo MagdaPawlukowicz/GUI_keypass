@@ -15,6 +15,8 @@ import java.util.stream.Collectors;
 
 public class MainPage {
     private Password password;
+    static String passwordApp = "123";
+    static String loginApp = "user";
     //    private List<Password> passwordList = new LinkedList();
     private BufferedWriter writer;
     private Main m = new Main();
@@ -82,9 +84,12 @@ public class MainPage {
 
     public void deleteRow() {
         Password selectedItem = (Password) tableView.getSelectionModel().getSelectedItem();
-        tableView.getItems().remove(selectedItem);
-        List<Password> codedPasswordList = codePasswordList(tableView);
-        writeFile(codedPasswordList, LogInPage.file);
+        List <Password> passwords = new LinkedList<>(tableView.getItems());
+        if (!PasswordType.GLOWNE.equals(selectedItem.getPasswordType())) {
+            tableView.getItems().remove(selectedItem);
+            List<Password> codedPasswordList = codePasswordList(tableView);
+            writeFile(codedPasswordList, LogInPage.file);
+        }
     }
 
     public void editRow() {
@@ -142,7 +147,9 @@ public class MainPage {
     }
 
     public void addCategory() {
-        addCategory(addCategoryTextField.getText());
+        if (!isCategoryExisting(addCategoryTextField.getText())) {
+            addCategory(addCategoryTextField.getText());
+        }
     }
 
     private void addCategory(String categoryName) {
@@ -201,12 +208,15 @@ public class MainPage {
 
     private void addDefaultPasswordToFile() {
         String categoryName = "aplikacje";
+        if (!isCategoryExisting(categoryName)){ addCategory(categoryName);};
+
         password = new Password(UUID.randomUUID().toString(), "KeyPass",
-                LogInPage.loginApp,
-                LogInPage.passwordApp,
+                loginApp,
+                passwordApp,
                 "KeyPass",
                 categoryName);
-        addCategory(categoryName);
+        password.setPasswordType(PasswordType.GLOWNE);
+
         tableView.getItems().add(password);
         List<Password> codePasswordList = codePasswordList(tableView);
         writeFile(codePasswordList, LogInPage.file);
@@ -282,6 +292,24 @@ public class MainPage {
         writer.write("Last log in time: " + LocalDate.now() + " " + LocalTime.now());
         writer.close();
         timeStamp.setVisible(true);
+    }
+
+    private boolean isCategoryExisting(String category){
+        boolean isExisting = false;
+        try {
+            reader = new BufferedReader(new FileReader(categoriesFilePath));
+            while (reader.ready()) {
+                String value = reader.readLine();
+                if(value.equals(category)) {
+                    isExisting = true;
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return isExisting;
     }
 
     private void makeColumnsEditable(TableView tableID, TableColumn<Password, String> names,

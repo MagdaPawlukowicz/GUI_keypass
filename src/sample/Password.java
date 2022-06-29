@@ -8,6 +8,7 @@ public class Password {
     private String password = null;
     private String passwordURL = null;
     private String category = null;
+    private PasswordType passwordType;
 
     public Password() {
     }
@@ -67,6 +68,14 @@ public class Password {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public PasswordType getPasswordType() {
+        return passwordType;
+    }
+
+    public void setPasswordType(PasswordType passwordType) {
+        this.passwordType = passwordType;
     }
 
     @Override
