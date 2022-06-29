@@ -4,85 +4,65 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="360.0"
-            prefWidth="600.0" style="-fx-background-color: #f69da1;" xmlns="http://javafx.com/javafx/11.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.MainPage">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="360.0" prefWidth="600.0" style="-fx-background-color: #f69da1;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.MainPage">
     <center>
         <AnchorPane prefHeight="285.0" prefWidth="600.0" BorderPane.alignment="CENTER">
             <children>
-                <Button fx:id="logOutButtonID" layoutX="497.0" layoutY="41.0" mnemonicParsing="false"
-                        onAction="#userLogOut" prefHeight="25.0" prefWidth="103.0"
-                        style="-fx-background-color: #ed266d;" text="LOG OUT" textFill="WHITE">
+                <Button fx:id="logOutButtonID" layoutX="519.0" layoutY="14.0" mnemonicParsing="false" onAction="#userLogOut" prefHeight="25.0" prefWidth="77.0" style="-fx-background-color: #ed266d;" text="LOG OUT" textFill="WHITE">
                     <font>
-                        <Font name="Gill Sans MT Bold" size="12.0"/>
+                        <Font name="Gill Sans MT Bold" size="10.0" />
                     </font>
                 </Button>
-                <TableView fx:id="tableView" editable="true" layoutY="69.0" prefHeight="216.0" prefWidth="600.0"
-                           tableMenuButtonVisible="true">
+                <TableView fx:id="tableView" editable="true" layoutY="69.0" prefHeight="216.0" prefWidth="600.0" tableMenuButtonVisible="true">
                     <columnResizePolicy>
-                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                     </columnResizePolicy>
                 </TableView>
-                <Label fx:id="timeStamp" layoutX="14.0" layoutY="16.0" prefHeight="17.0" prefWidth="385.0"
-                       text="TIME STAMP" textFill="#ed266d" visible="false"/>
-                <Button fx:id="deleteRowButton" layoutX="367.0" layoutY="41.0" mnemonicParsing="false"
-                        onAction="#deleteRow" prefHeight="25.0" prefWidth="117.0" style="-fx-background-color: #ed266d;"
-                        text="DELETE ROW" textFill="WHITE">
+                <Label fx:id="timeStamp" layoutX="14.0" layoutY="16.0" prefHeight="17.0" prefWidth="385.0" text="TIME STAMP" textFill="#ed266d" visible="false" />
+                <ChoiceBox fx:id="categoriesChoiceBox" layoutY="42.0" prefHeight="25.0" prefWidth="144.0" />
+                <Button fx:id="deleteCategoryButton" layoutX="147.0" layoutY="42.0" mnemonicParsing="false" onAction="#deleteCategory" prefHeight="25.0" prefWidth="125.0" style="-fx-background-color: #ed266d;" text="DELETE CATEGORY" textFill="WHITE">
                     <font>
-                        <Font name="Gill Sans MT Bold" size="12.0"/>
+                        <Font name="Gill Sans MT Bold" size="10.0" />
                     </font>
                 </Button>
-                <Button fx:id="deleteCategoryButton" layoutX="208.0" layoutY="42.0" mnemonicParsing="false"
-                        onAction="#deleteCategory" prefHeight="25.0" prefWidth="145.0"
-                        style="-fx-background-color: #ed266d;" text="DELETE CATEGORY" textFill="WHITE">
+            <Button fx:id="showCategoryButton" layoutX="275.0" layoutY="42.0" mnemonicParsing="false" onAction="#showCategory" prefHeight="25.0" prefWidth="125.0" style="-fx-background-color: #ed266d;" text="SHOW CATEGORY" textFill="WHITE">
+               <font>
+                  <Font name="Gill Sans MT Bold" size="10.0" />
+               </font>
+            </Button>
+                <Button fx:id="deleteRowButton" layoutX="403.0" layoutY="42.0" mnemonicParsing="false" onAction="#deleteRow" prefHeight="25.0" prefWidth="113.0" style="-fx-background-color: #ed266d;" text="DELETE ROW" textFill="WHITE">
                     <font>
-                        <Font name="Gill Sans MT Bold" size="12.0"/>
+                        <Font name="Gill Sans MT Bold" size="10.0" />
                     </font>
                 </Button>
-                <ChoiceBox fx:id="categoriesChoiceBox" layoutX="-2.0" layoutY="42.0" prefHeight="23.0"
-                           prefWidth="210.0"/>
+                <Button fx:id="editButton" layoutX="519.0" layoutY="42.0" mnemonicParsing="false" onAction="#editRow" prefHeight="24.0" prefWidth="78.0" style="-fx-background-color: #ed266d;" text="SAVE" textFill="WHITE">
+                    <font>
+                        <Font name="Gill Sans MT Bold" size="10.0" />
+                    </font>
+                </Button>
             </children>
         </AnchorPane>
     </center>
     <bottom>
-        <AnchorPane maxWidth="-Infinity" minWidth="-Infinity" prefHeight="104.0" prefWidth="600.0"
-                    BorderPane.alignment="CENTER">
+        <AnchorPane maxWidth="-Infinity" minWidth="-Infinity" prefHeight="104.0" prefWidth="600.0" BorderPane.alignment="CENTER">
             <children>
-                <TextField fx:id="textFieldNameRow" layoutY="18.0" prefHeight="25.0" prefWidth="62.0"
-                           promptText="Name"/>
-                <TextField fx:id="textFieldLoginRow" layoutX="63.0" layoutY="18.0" prefHeight="25.0" prefWidth="100.0"
-                           promptText="Login"/>
-                <TextField fx:id="textFieldPasswordRow" layoutX="164.0" layoutY="18.0" prefHeight="25.0"
-                           prefWidth="100.0" promptText="Password"/>
-                <TextField fx:id="textFieldURLRow" layoutX="265.0" layoutY="18.0" prefHeight="25.0" prefWidth="100.0"
-                           promptText="URL"/>
-                <Button fx:id="addRowButton" layoutX="509.0" layoutY="19.0" mnemonicParsing="false" onAction="#addRow"
-                        prefHeight="22.0" prefWidth="92.0" style="-fx-background-color: #ed266d;" text="ADD"
-                        textFill="WHITE">
+                <TextField fx:id="textFieldNameRow" layoutY="18.0" prefHeight="25.0" prefWidth="62.0" promptText="Name" />
+                <TextField fx:id="textFieldLoginRow" layoutX="63.0" layoutY="18.0" prefHeight="25.0" prefWidth="100.0" promptText="Login" />
+                <TextField fx:id="textFieldPasswordRow" layoutX="164.0" layoutY="18.0" prefHeight="25.0" prefWidth="100.0" promptText="Password" />
+                <TextField fx:id="textFieldURLRow" layoutX="265.0" layoutY="18.0" prefHeight="25.0" prefWidth="100.0" promptText="URL" />
+                <Button fx:id="addRowButton" layoutX="509.0" layoutY="19.0" mnemonicParsing="false" onAction="#addRow" prefHeight="22.0" prefWidth="92.0" style="-fx-background-color: #ed266d;" text="ADD" textFill="WHITE">
                     <font>
-                        <Font name="Gill Sans MT Bold" size="12.0"/>
+                        <Font name="Gill Sans MT Bold" size="10.0" />
                     </font>
                 </Button>
-                <Button fx:id="editButton" layoutX="509.0" layoutY="45.0" mnemonicParsing="false" onAction="#editRow"
-                        prefHeight="22.0" prefWidth="92.0" style="-fx-background-color: #ed266d;" text="SAVE"
-                        textFill="WHITE">
+                <Button fx:id="addCategoryButton" layoutX="209.0" layoutY="45.0" mnemonicParsing="false" onAction="#addCategory" prefHeight="24.0" prefWidth="144.0" style="-fx-background-color: #ed266d;" text="ADD CATEGORY" textFill="WHITE">
                     <font>
-                        <Font name="Gill Sans MT Bold" size="12.0"/>
+                        <Font name="Gill Sans MT Bold" size="10.0" />
                     </font>
                 </Button>
-                <Button fx:id="addCategoryButton" layoutX="209.0" layoutY="45.0" mnemonicParsing="false"
-                        onAction="#addCategory" prefHeight="24.0" prefWidth="129.0"
-                        style="-fx-background-color: #ed266d;" text="ADD CATEGORY" textFill="WHITE">
-                    <font>
-                        <Font name="Gill Sans MT Bold" size="12.0"/>
-                    </font>
-                </Button>
-                <TextField fx:id="addCategoryTextField" layoutY="45.0" prefHeight="25.0" prefWidth="208.0"
-                           promptText="New category name"/>
-                <Label fx:id="savedInformationLabel" contentDisplay="CENTER" layoutX="394.0" layoutY="48.0"
-                       prefHeight="17.0" prefWidth="102.0" text="SAVED" textFill="#ed266d" visible="false"/>
-                <ChoiceBox fx:id="addCategoriesChoiceBox" layoutX="365.0" layoutY="18.0" prefHeight="25.0"
-                           prefWidth="143.0"/>
+                <TextField fx:id="addCategoryTextField" layoutY="45.0" prefHeight="25.0" prefWidth="208.0" promptText="New category name" />
+                <Label fx:id="savedInformationLabel" contentDisplay="CENTER" layoutX="394.0" layoutY="48.0" prefHeight="17.0" prefWidth="102.0" text="SAVED" textFill="#ed266d" visible="false" />
+                <ChoiceBox fx:id="addCategoriesChoiceBox" layoutX="365.0" layoutY="18.0" prefHeight="25.0" prefWidth="143.0" />
             </children>
         </AnchorPane>
     </bottom>

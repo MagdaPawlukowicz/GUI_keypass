@@ -26,6 +26,7 @@ public class LogInPage {
     private Label lastLogInInformation;
 
     private final Main m = new Main();
+    private final MainPage mainPage = new MainPage();
     static File file;
     String fileAbsolutePath;
     private static BufferedReader reader;
@@ -45,7 +46,9 @@ public class LogInPage {
     }
 
     private void checkLogIn() throws IOException {
-        if (MainPage.loginApp.equals(userNameID.getText()) && MainPage.passwordApp.equals(passwordID.getText()) && fileAbsolutePath != null) {
+        if (mainPage.getMainLogin(file).equals(userNameID.getText())
+                && mainPage.getMainPassword(file).equals(passwordID.getText())
+                && fileAbsolutePath != null) {
             wrongLogInID.setText("SUCCESS");
             wrongLogInID.setStyle("-fx-text-fill: #32a852;");
             circleID.setFill(Paint.valueOf("#32a852"));
