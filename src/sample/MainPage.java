@@ -12,13 +12,12 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class MainPage {
-    private Password password;
     private String categoryNameApp = "-";
-    private String defaultCategory = "default";
+    private String defaultCategoryName = "default";
     private BufferedWriter writer;
     private Main m = new Main();
     private List<String> categories = new LinkedList<>();
-    private List<Password> passwordList;
+    private List<Password> passwordList = new LinkedList<>();
     private BufferedReader reader;
     private String categoriesFilePath = "src/data/categories.txt";
 
@@ -67,7 +66,7 @@ public class MainPage {
 
         tableView.setEditable(true);
         makeColumnsEditable(tableView, names, logins, passwords, URLs);
-        addDefaultCategory(defaultCategory);
+        addDefaultCategory(defaultCategoryName);
         getCategories();
         readFile(LogInPage.file);
         passwordList = new LinkedList<>(tableView.getItems());
@@ -75,11 +74,12 @@ public class MainPage {
     }
 
     public void addRow() {
-        password = new Password(UUID.randomUUID().toString(), textFieldNameRow.getText(), textFieldLoginRow.getText(),
+        Password password = new Password(UUID.randomUUID().toString(), textFieldNameRow.getText(), textFieldLoginRow.getText(),
                 textFieldPasswordRow.getText(), textFieldURLRow.getText(), addCategoriesChoiceBox.getValue(),
                 PasswordType.BASIC);
+        passwordList.add(password);
         tableView.getItems().add(password);
-        List<Password> codedPasswordList = codePasswordList(tableView);
+        List<Password> codedPasswordList = codePasswordList(passwordList);
         writeFile(codedPasswordList, LogInPage.file);
     }
 
@@ -88,13 +88,17 @@ public class MainPage {
         List<Password> passwords = new LinkedList<>(tableView.getItems());
         if (!PasswordType.MAIN.equals(selectedItem.getPasswordType())) {
             tableView.getItems().remove(selectedItem);
-            List<Password> codedPasswordList = codePasswordList(tableView);
+            passwordList.remove(selectedItem);
+            List<Password> codedPasswordList = codePasswordList(passwordList);
             writeFile(codedPasswordList, LogInPage.file);
         }
     }
 
     public void editRow() {
-        List<Password> codedPasswordList = codePasswordList(tableView);
+        Password selectedItem = (Password) tableView.getSelectionModel().getSelectedItem();
+        passwordList.remove(selectedItem);
+        passwordList.add(selectedItem);
+        List<Password> codedPasswordList = codePasswordList(passwordList);
         writeFile(codedPasswordList, LogInPage.file);
         savedInformationLabel.setText("SAVED DATA");
         savedInformationLabel.setVisible(true);
@@ -118,7 +122,7 @@ public class MainPage {
 
     public void deleteCategory() {
         String selectedCategory = categoriesChoiceBox.getSelectionModel().getSelectedItem();
-        if (!selectedCategory.equals(defaultCategory)) {
+        if (!selectedCategory.equals(defaultCategoryName)) {
             categoriesChoiceBox.getItems().remove(selectedCategory);
             addCategoriesChoiceBox.getItems().remove(selectedCategory);
             categories.remove(selectedCategory);
@@ -144,14 +148,19 @@ public class MainPage {
                 tableView.getItems().remove(password);
             }
         }
-        passwords = codePasswordList(tableView);
+        passwordList = passwordList.stream()
+                .filter(p ->  !selectedCategory.equals(p.getCategory()))
+                .collect(Collectors.toList());
+
+        passwords = codePasswordList(passwordList);
         writeFile(passwords, LogInPage.file);
 
     }
 
     public void addCategory() {
         String categoryTextField = addCategoryTextField.getText();
-        if (!isCategoryExisting(categoryTextField) && !categoryTextField.equals(categoryNameApp)) {
+        if (!isCategoryExisting(categoryTextField) && !categoryTextField.equals(categoryNameApp)
+                && !categoryTextField.equals(defaultCategoryName)) {
             addCategory(categoryTextField);
         }
     }
@@ -192,12 +201,13 @@ public class MainPage {
                 FileReader passwordsReader = new FileReader(file);
                 ObjectMapper objectMapper = new ObjectMapper();
                 Password[] passwords = objectMapper.readValue(passwordsReader, Password[].class); // to co zostanie przeczytanie w pliku to tablica passwordow
-                List<Password> passwordList = new LinkedList<>(Arrays.asList(passwords));
-                passwordList.forEach(password -> {
+                LinkedList<Password> codedPasswordList = new LinkedList<>(Arrays.asList(passwords));
+                codedPasswordList.forEach(password -> {
                     Password decodedPassword = decodePassword(password);
+                    passwordList.add(password);
                     tableView.getItems().add(decodedPassword);
                 });
-                if (passwordList.size() == 0) {
+                if (codedPasswordList.size() == 0) {
                     addDefaultPasswordToFile();
                 }
             } catch (FileNotFoundException e) {
@@ -211,23 +221,22 @@ public class MainPage {
     }
 
     private void addDefaultPasswordToFile() {
-        password = new Password(UUID.randomUUID().toString(), "KeyPass",
+        Password password = new Password(UUID.randomUUID().toString(), "KeyPass",
                 "user",
                 "123",
                 "KeyPass",
                 categoryNameApp, PasswordType.MAIN);
 
         tableView.getItems().add(password);
-        List<Password> codePasswordList = codePasswordList(tableView);
+        passwordList.add(password);
+        List<Password> codePasswordList = codePasswordList(passwordList);
         writeFile(codePasswordList, LogInPage.file);
     }
 
-    private List<Password> codePasswordList(TableView tableID) {
-        List<Password> codedPasswordList = tableID.getItems();
-        codedPasswordList = codedPasswordList.stream()
+    private List<Password> codePasswordList(List<Password> decodedPasswordList) {
+        return decodedPasswordList.stream()
                 .map(this::codePassword)
                 .collect(Collectors.toList());
-        return codedPasswordList;
     }
 
     private Password codePassword(Password password) {
@@ -402,37 +411,21 @@ public class MainPage {
     public void showCategory() {
         String selectedCategory = categoriesChoiceBox.getValue();
         if (selectedCategory == null) return;
-        File actualCat = new File("src/data/actualCategory.json");
-        List<Password> passwordsToDisplay = tableView.getItems();
-        passwordsToDisplay = passwordsToDisplay.stream()
-                .filter(p -> selectedCategory.equals(p.getCategory()))
-                .collect(Collectors.toList());
-
+        List<Password> passwordsToDisplay;
+        if (defaultCategoryName.equals(selectedCategory)) {
+            passwordsToDisplay = passwordList;
+        } else {
+            passwordsToDisplay = passwordList.stream()
+                    .filter(p -> selectedCategory.equals(p.getCategory()))
+                    .collect(Collectors.toList());
+        }
         tableView.getItems().clear();
         tableView.getItems().addAll(passwordsToDisplay);
-
-//        for (Password password : passwordsToDisplay) {
-//            if (password.getCategory().equals(categoriesChoiceBox.getValue())) {
-//                codePassword(password);
-//                passwordsToDisplay.add(password);
-//            }
-//        }
-//        writeFile(passwordsToDisplay, actualCat);
-//
-//        if (categoriesChoiceBox.getValue().equals(defaultCategory)) {
-//            tableView.getItems().removeAll();
-//            readFile(LogInPage.file);
-//        } else {
-//            tableView.getItems().removeAll();
-//            readFile(new File("src/data/actualCategory.json"));
-//        }
-
-
     }
 
         private void addDefaultCategory (String defaultCategory){
             if (!isCategoryExisting(defaultCategory)){
-                addCategory(defaultCategory);
+                categoriesChoiceBox.getItems().add(defaultCategory);
             }
         }
 }
