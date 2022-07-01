@@ -18,7 +18,7 @@
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
                 </TableView>
-                <Label fx:id="timeStamp" layoutX="14.0" layoutY="16.0" prefHeight="17.0" prefWidth="385.0" text="TIME STAMP" textFill="#ed266d" visible="false">
+                <Label fx:id="timeStampLabel" layoutX="14.0" layoutY="16.0" prefHeight="17.0" prefWidth="385.0" text="TIME STAMP" textFill="#ed266d" visible="false">
                <font>
                   <Font name="Gill Sans MT Bold" size="12.0" />
                </font></Label>
@@ -38,7 +38,7 @@
                         <Font name="Gill Sans MT Bold" size="10.0" />
                     </font>
                 </Button>
-                <Button fx:id="editButton" layoutX="519.0" layoutY="42.0" mnemonicParsing="false" onAction="#editRow" prefHeight="24.0" prefWidth="78.0" style="-fx-background-color: #ed266d;" text="SAVE" textFill="WHITE">
+                <Button fx:id="editButton" layoutX="519.0" layoutY="42.0" mnemonicParsing="false" onAction="#saveAllChanges" prefHeight="24.0" prefWidth="78.0" style="-fx-background-color: #ed266d;" text="SAVE" textFill="WHITE">
                     <font>
                         <Font name="Gill Sans MT Bold" size="10.0" />
                     </font>
@@ -49,10 +49,10 @@
     <bottom>
         <AnchorPane maxWidth="-Infinity" minWidth="-Infinity" prefHeight="104.0" prefWidth="600.0" BorderPane.alignment="CENTER">
             <children>
-                <TextField fx:id="textFieldNameRow" layoutY="18.0" prefHeight="25.0" prefWidth="62.0" promptText="Name" />
-                <TextField fx:id="textFieldLoginRow" layoutX="63.0" layoutY="18.0" prefHeight="25.0" prefWidth="100.0" promptText="Login" />
-                <TextField fx:id="textFieldPasswordRow" layoutX="164.0" layoutY="18.0" prefHeight="25.0" prefWidth="100.0" promptText="Password" />
-                <TextField fx:id="textFieldURLRow" layoutX="265.0" layoutY="18.0" prefHeight="25.0" prefWidth="100.0" promptText="URL" />
+                <TextField fx:id="nameRowTextField" layoutY="18.0" prefHeight="25.0" prefWidth="62.0" promptText="Name" />
+                <TextField fx:id="loginRowTextField" layoutX="63.0" layoutY="18.0" prefHeight="25.0" prefWidth="100.0" promptText="Login" />
+                <TextField fx:id="passwordRowTextField" layoutX="164.0" layoutY="18.0" prefHeight="25.0" prefWidth="100.0" promptText="Password" />
+                <TextField fx:id="URLRowTextField" layoutX="265.0" layoutY="18.0" prefHeight="25.0" prefWidth="100.0" promptText="URL" />
                 <Button fx:id="addRowButton" layoutX="509.0" layoutY="19.0" mnemonicParsing="false" onAction="#addRow" prefHeight="22.0" prefWidth="92.0" style="-fx-background-color: #ed266d;" text="ADD" textFill="WHITE">
                     <font>
                         <Font name="Gill Sans MT Bold" size="10.0" />

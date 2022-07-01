@@ -18,7 +18,7 @@ public class MainPage {
     private String defaultCategoryName = "default";
     private BufferedWriter writer;
     private Main m = new Main();
-    private List<String> categories = new LinkedList<>();
+    private List<String> categoryList = new LinkedList<>();
     private List<Password> passwordList = new LinkedList<>();
     private BufferedReader reader;
     private String categoriesFilePath = "src/data/categories.txt";
@@ -26,15 +26,15 @@ public class MainPage {
     @FXML
     private TableView tableView;
     @FXML
-    private TextField textFieldNameRow;
+    private TextField nameRowTextField;
     @FXML
-    private TextField textFieldLoginRow;
+    private TextField loginRowTextField;
     @FXML
-    private TextField textFieldPasswordRow;
+    private TextField passwordRowTextField;
     @FXML
-    private TextField textFieldURLRow;
+    private TextField URLRowTextField;
     @FXML
-    private Label timeStamp;
+    private Label timeStampLabel;
     @FXML
     private Label savedInformationLabel;
     @FXML
@@ -76,8 +76,8 @@ public class MainPage {
     }
 
     public void addRow() {
-        Password password = new Password(UUID.randomUUID().toString(), textFieldNameRow.getText(), textFieldLoginRow.getText(),
-                textFieldPasswordRow.getText(), textFieldURLRow.getText(), addCategoriesChoiceBox.getValue(),
+        Password password = new Password(UUID.randomUUID().toString(), nameRowTextField.getText(), loginRowTextField.getText(),
+                passwordRowTextField.getText(), URLRowTextField.getText(), addCategoriesChoiceBox.getValue(),
                 PasswordType.BASIC);
         passwordList.add(password);
         tableView.getItems().add(password);
@@ -97,7 +97,7 @@ public class MainPage {
         }
     }
 
-    public void editRow() {
+    public void saveAllChanges() {
         Password selectedItem = (Password) tableView.getSelectionModel().getSelectedItem();
         if (selectedItem == null) return;
         passwordList.remove(selectedItem);
@@ -115,7 +115,7 @@ public class MainPage {
                 String value = reader.readLine();
                 categoriesChoiceBox.getItems().add(value);
                 addCategoriesChoiceBox.getItems().add(value);
-                categories.add(value);
+                categoryList.add(value);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -130,10 +130,10 @@ public class MainPage {
         if (!selectedCategory.equals(defaultCategoryName)) {
             categoriesChoiceBox.getItems().remove(selectedCategory);
             addCategoriesChoiceBox.getItems().remove(selectedCategory);
-            categories.remove(selectedCategory);
+            categoryList.remove(selectedCategory);
             try {
                 writer = new BufferedWriter(new FileWriter(categoriesFilePath));
-                for (String category : categories) {
+                for (String category : categoryList) {
                     writer.write(category + "\n");
                 }
                 writer.close();
@@ -177,7 +177,7 @@ public class MainPage {
             writer = new BufferedWriter(new FileWriter(categoriesFilePath, true));
             writer.write(categoryName + "\n");
             writer.close();
-            categories.add(categoryName);
+            categoryList.add(categoryName);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -303,11 +303,11 @@ public class MainPage {
     }
 
     public void showActualTimeLabel() throws IOException {
-        timeStamp.setText("LOG IN TIME: " + LocalDate.now() + " " + LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm")));
+        timeStampLabel.setText("LOG IN TIME: " + LocalDate.now() + " " + LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm")));
         writer = new BufferedWriter(new FileWriter("src/data/lastLogInTime.txt"));
         writer.write("LAST LOG IN TIME: " + LocalDate.now() + " " + LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm")));
         writer.close();
-        timeStamp.setVisible(true);
+        timeStampLabel.setVisible(true);
     }
 
     private boolean isCategoryExisting(String category) {

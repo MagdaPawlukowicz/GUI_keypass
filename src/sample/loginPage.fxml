@@ -20,7 +20,7 @@
    <center>
       <AnchorPane BorderPane.alignment="CENTER">
          <children>
-            <PasswordField fx:id="passwordID" layoutX="199.0" layoutY="195.0" promptText="password" />
+            <PasswordField fx:id="passwordField" layoutX="199.0" layoutY="195.0" promptText="password" />
             <Label layoutX="26.0" layoutY="193.0" prefHeight="29.0" prefWidth="163.0" text="PASSWORD:">
                <font>
                   <Font name="Gill Sans MT Bold" size="24.0" />
@@ -29,14 +29,14 @@
                <font>
                   <Font name="Gill Sans MT Bold" size="24.0" />
                </font></Label>
-            <TextField fx:id="userNameID" layoutX="199.0" layoutY="146.0" promptText="username" />
+            <TextField fx:id="userNameTextField" layoutX="199.0" layoutY="146.0" promptText="username" />
             <Button fx:id="logInButtonID" layoutX="36.0" layoutY="289.0" mnemonicParsing="false" onAction="#userLogIn" prefHeight="25.0" prefWidth="99.0" style="-fx-background-color: #ed266d;" text="LOG IN" textFill="WHITE">
                <font>
                   <Font name="Gill Sans MT Bold" size="13.0" />
                </font>
             </Button>
-            <Circle fx:id="circleID" fill="RED" layoutX="93.0" layoutY="79.0" radius="15.0" stroke="#f69da1" strokeType="INSIDE" visible="false" />
-            <Label fx:id="wrongLogInID" layoutX="126.0" layoutY="59.0" prefHeight="41.0" prefWidth="264.0" text="WRONGPASS" textFill="RED" visible="false">
+            <Circle fx:id="circle" fill="RED" layoutX="93.0" layoutY="79.0" radius="15.0" stroke="#f69da1" strokeType="INSIDE" visible="false" />
+            <Label fx:id="wrongLogInLabel" layoutX="126.0" layoutY="59.0" prefHeight="41.0" prefWidth="264.0" text="WRONGPASS" textFill="RED" visible="false">
                <font>
                   <Font name="Gill Sans MT Bold" size="10.0" />
                </font>
@@ -45,12 +45,12 @@
                <font>
                   <Font name="Gill Sans MT Bold" size="14.0" />
                </font></Button>
-            <Label fx:id="pathInformation" layoutX="142.0" layoutY="244.0" pickOnBounds="false" prefHeight="25.0" prefWidth="251.0" text="PATH INFO" textFill="#ed266d" visible="false">
+            <Label fx:id="pathInformationLabel" layoutX="142.0" layoutY="244.0" pickOnBounds="false" prefHeight="25.0" prefWidth="251.0" text="PATH INFO" textFill="#ed266d" visible="false">
                <font>
                   <Font name="Gill Sans MT" size="12.0" />
                </font>
             </Label>
-            <Label fx:id="lastLogInInformation" layoutX="16.0" layoutY="6.0" prefHeight="17.0" prefWidth="360.0" text="TIME STAMP" textFill="#ed266d">
+            <Label fx:id="lastLogInInformationLabel" layoutX="16.0" layoutY="6.0" prefHeight="17.0" prefWidth="360.0" text="TIME STAMP" textFill="#ed266d">
                <font>
                   <Font name="Gill Sans MT Bold" size="12.0" />
                </font></Label>

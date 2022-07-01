@@ -13,17 +13,17 @@ import java.io.*;
 
 public class LogInPage {
     @FXML
-    private TextField userNameID;
+    private TextField userNameTextField;
     @FXML
-    private PasswordField passwordID;
+    private PasswordField passwordField;
     @FXML
-    private Circle circleID;
+    private Circle circle;
     @FXML
-    private Label wrongLogInID;
+    private Label wrongLogInLabel;
     @FXML
-    private Label pathInformation;
+    private Label pathInformationLabel;
     @FXML
-    private Label lastLogInInformation;
+    private Label lastLogInInformationLabel;
 
     private final Main m = new Main();
     private final MainPage mainPage = new MainPage();
@@ -35,7 +35,7 @@ public class LogInPage {
     public void initialize() {
         try {
             reader = new BufferedReader(new FileReader("src/data/lastLogInTime.txt"));
-            lastLogInInformation.setText(reader.readLine());
+            lastLogInInformationLabel.setText(reader.readLine());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -46,38 +46,38 @@ public class LogInPage {
     }
 
     private void checkLogIn() throws IOException {
-        if (mainPage.getMainLogin(file).equals(userNameID.getText())
-                && mainPage.getMainPassword(file).equals(passwordID.getText())
+        if (mainPage.getMainLogin(file).equals(userNameTextField.getText())
+                && mainPage.getMainPassword(file).equals(passwordField.getText())
                 && file != null) {
-            wrongLogInID.setText("SUCCESS");
-            wrongLogInID.setStyle("-fx-text-fill: #32a852;");
-            circleID.setFill(Paint.valueOf("#32a852"));
+            wrongLogInLabel.setText("SUCCESS");
+            wrongLogInLabel.setStyle("-fx-text-fill: #32a852;");
+            circle.setFill(Paint.valueOf("#32a852"));
             m.changeScene("mainPage.fxml");
         } else if (file == null) {
-            wrongLogInID.setText("UPLOAD JSON FILE");
-            wrongLogInID.setStyle("-fx-text-fill: #ff7700;");
-            circleID.setFill(Paint.valueOf("#ff7700"));
-        } else if ((userNameID.getText().isEmpty() && passwordID.getText().isEmpty())) {
-            wrongLogInID.setText("WRITE DOWN ALL DATA");
-            wrongLogInID.setStyle("-fx-text-fill: #ff7700;");
-            circleID.setFill(Paint.valueOf("#ff7700"));
+            wrongLogInLabel.setText("UPLOAD JSON FILE");
+            wrongLogInLabel.setStyle("-fx-text-fill: #ff7700;");
+            circle.setFill(Paint.valueOf("#ff7700"));
+        } else if ((userNameTextField.getText().isEmpty() && passwordField.getText().isEmpty())) {
+            wrongLogInLabel.setText("WRITE DOWN ALL DATA");
+            wrongLogInLabel.setStyle("-fx-text-fill: #ff7700;");
+            circle.setFill(Paint.valueOf("#ff7700"));
         } else {
-            wrongLogInID.setText("CHECK YOUR DATA");
-            wrongLogInID.setStyle("-fx-text-fill: #ff7700;");
-            circleID.setFill(Paint.valueOf("#ff7700"));
+            wrongLogInLabel.setText("CHECK YOUR DATA");
+            wrongLogInLabel.setStyle("-fx-text-fill: #ff7700;");
+            circle.setFill(Paint.valueOf("#ff7700"));
         }
-        wrongLogInID.setVisible(true);
-        circleID.setVisible(true);
+        wrongLogInLabel.setVisible(true);
+        circle.setVisible(true);
     }
 
     public void chooseSingleJSONFile() {
         FileChooser fc = new FileChooser();
-        fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
+        fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json"));
         file = fc.showOpenDialog(null);
 
         if (file != null) {
-            pathInformation.setText("Selected file: " + file.getAbsolutePath());
-            pathInformation.setVisible(true);
+            pathInformationLabel.setText("Selected file: " + file.getAbsolutePath());
+            pathInformationLabel.setVisible(true);
             fileAbsolutePath = file.getAbsolutePath();
         }
     }
