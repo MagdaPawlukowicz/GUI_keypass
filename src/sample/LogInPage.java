@@ -45,7 +45,7 @@ public class LogInPage {
         checkLogIn();
     }
 
-    private void checkLogIn() throws IOException{
+    private void checkLogIn() throws IOException {
         if (mainPage.getMainLogin(file).equals(userNameID.getText())
                 && mainPage.getMainPassword(file).equals(passwordID.getText())
                 && file != null) {
@@ -53,11 +53,11 @@ public class LogInPage {
             wrongLogInID.setStyle("-fx-text-fill: #32a852;");
             circleID.setFill(Paint.valueOf("#32a852"));
             m.changeScene("mainPage.fxml");
-        }else if(file == null){
+        } else if (file == null) {
             wrongLogInID.setText("UPLOAD JSON FILE");
             wrongLogInID.setStyle("-fx-text-fill: #ff7700;");
             circleID.setFill(Paint.valueOf("#ff7700"));
-        }else if ((userNameID.getText().isEmpty() && passwordID.getText().isEmpty())) {
+        } else if ((userNameID.getText().isEmpty() && passwordID.getText().isEmpty())) {
             wrongLogInID.setText("WRITE DOWN ALL DATA");
             wrongLogInID.setStyle("-fx-text-fill: #ff7700;");
             circleID.setFill(Paint.valueOf("#ff7700"));

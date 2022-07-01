@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -153,7 +154,7 @@ public class MainPage {
             }
         }
         passwordList = passwordList.stream()
-                .filter(p ->  !selectedCategory.equals(p.getCategory()))
+                .filter(p -> !selectedCategory.equals(p.getCategory()))
                 .collect(Collectors.toList());
 
         passwords = codePasswordList(passwordList);
@@ -328,7 +329,7 @@ public class MainPage {
     }
 
     public String getMainPassword(File file) {
-            String mainPassword = null;
+        String mainPassword = null;
         if (file.exists() && file.length() > 0) {
             try {
                 FileReader passwordsReader = new FileReader(file);
@@ -351,28 +352,28 @@ public class MainPage {
         return "123";
     }
 
-        public String getMainLogin (File file) {
-            String mainLogin = null;
-            if (file != null && file.exists() && file.length() > 0) {
-                try {
-                    FileReader passwordsReader = new FileReader(file);
-                    ObjectMapper objectMapper = new ObjectMapper();
-                    Password[] passwords = objectMapper.readValue(passwordsReader, Password[].class);
-                    List<Password> passwordList = new LinkedList<>(Arrays.asList(passwords));
-                    for (Password password : passwordList) {
-                        if (password.getPasswordType().equals(PasswordType.MAIN)) {
-                            mainLogin = decodeStringValue(password.getLogin());
-                        }
+    public String getMainLogin(File file) {
+        String mainLogin = null;
+        if (file != null && file.exists() && file.length() > 0) {
+            try {
+                FileReader passwordsReader = new FileReader(file);
+                ObjectMapper objectMapper = new ObjectMapper();
+                Password[] passwords = objectMapper.readValue(passwordsReader, Password[].class);
+                List<Password> passwordList = new LinkedList<>(Arrays.asList(passwords));
+                for (Password password : passwordList) {
+                    if (password.getPasswordType().equals(PasswordType.MAIN)) {
+                        mainLogin = decodeStringValue(password.getLogin());
                     }
-                    return mainLogin;
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
+                return mainLogin;
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            return "user";
         }
+        return "user";
+    }
 
     private void makeColumnsEditable(TableView tableID, TableColumn<Password, String> names,
                                      TableColumn<Password, String> logins,
@@ -427,9 +428,9 @@ public class MainPage {
         tableView.getItems().addAll(passwordsToDisplay);
     }
 
-        private void addDefaultCategory (String defaultCategory){
-            if (!isCategoryExisting(defaultCategory)){
-                categoriesChoiceBox.getItems().add(defaultCategory);
-            }
+    private void addDefaultCategory(String defaultCategory) {
+        if (!isCategoryExisting(defaultCategory)) {
+            categoriesChoiceBox.getItems().add(defaultCategory);
         }
+    }
 }

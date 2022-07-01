@@ -1,4 +1,5 @@
 package sample;
+
 import java.util.Objects;
 
 public class Password {
