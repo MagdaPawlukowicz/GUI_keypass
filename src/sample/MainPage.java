@@ -191,7 +191,7 @@ public class MainPage {
         Password[] passwordsArray = passwordList.toArray(Password[]::new);
         try {
             FileWriter passwordsFile = new FileWriter(file, false);
-            ObjectMapper objectMapper = new ObjectMapper(); //obiekt ktory pozwala na zapisywanie obiektow w formie JSON
+            ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.writeValue(passwordsFile, passwordsArray);
 
         } catch (IOException e) {
@@ -205,7 +205,7 @@ public class MainPage {
             try {
                 FileReader passwordsReader = new FileReader(file);
                 ObjectMapper objectMapper = new ObjectMapper();
-                Password[] passwords = objectMapper.readValue(passwordsReader, Password[].class); // to co zostanie przeczytanie w pliku to tablica passwordow
+                Password[] passwords = objectMapper.readValue(passwordsReader, Password[].class);
                 LinkedList<Password> codedPasswordList = new LinkedList<>(Arrays.asList(passwords));
                 codedPasswordList.forEach(password -> {
                     Password decodedPassword = decodePassword(password);
